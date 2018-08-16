@@ -1,0 +1,81 @@
+<ul class="nav nav-tabs">
+  <li class="nav-link" data-toggle="tab">
+    <a>Users</a>
+  </li>
+  <li class="nav-link" data-toggle="tab">
+    <a>Posts</a>
+  </li>
+  <li class="nav-link" data-toggle="tab">
+    <a>Comments</a>
+  </li>
+</ul>
+<div id="table"></div>
+
+<table id="user-table" class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">User Name</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{user.UserName}}</td>
+      <td><a routerLink="">Open</a></td>
+      <td><a (click)="deleteUser(user.Id)">Delete</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<br/>
+
+<table id="post-table" class="table">
+  <thead class="thead-dark">
+      <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Author Name</th>
+          <th scope="col">Date</th>    
+          <th scope="col">Approved</th> 
+          <th scope="col"></th>
+          <th scope="col"></th>
+      </tr>
+  </thead>
+  <tbody>
+          <tr *ngFor="let post of posts">
+              <td>{{post.Title}}</td>
+              <td>{{post.AuthorName}}</td>
+              <td>{{post.PostedAt}}</td>
+              <td>{{post.IsApproved}}</td>
+              <td><a routerLink="">Open</a></td>
+              <td><a (click)="approvePost(post.Id)">Approve</a></td>
+              <td><a (click)="deletePost(post.Id)">Delete</a></td>
+          </tr>
+  </tbody>
+</table>
+
+<br/>
+
+<table id="comment-table" class="table">
+  <thead class="thead-dark">
+      <tr>
+          <th scope="col">Author Name</th>
+          <th scope="col">Date</th>
+          <th scope="col">Post</th>
+          <th scope="col">Short description</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+      </tr>
+  </thead>
+  <tbody>
+          <tr *ngFor="let comment of comments">
+              <td>{{comment.AuthorName}}</td>
+              <td>{{comment.Date}}</td>
+              <td>{{comment.PostId}}</td>
+              <td>{{comment.Text}}</td>
+              <td><a routerLink="">Open</a></td>
+              <td><a (click)="approveComment(comment.Id)">Approve</a></td>
+              <td><a (click)="deleteComment(comment.Id)">Delete</a></td>         
+          </tr>
+  </tbody>
+</table>

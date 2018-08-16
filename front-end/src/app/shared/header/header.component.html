@@ -1,0 +1,24 @@
+<!-- Show this for logged out users -->
+<div *ngIf="!isAuthenticated">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+        <div>
+            <a class="navbar-brand" routerLink="/posts">MyBlog</a>
+        </div>
+    </nav>
+</div>
+
+<!-- Show this for logged in users -->
+<div *ngIf="isAuthenticated">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+        <div>
+            <a class="navbar-brand" routerLink="/posts">MyBlog</a>
+        </div>
+        <div class="navbar-brand">
+            <div class="form-inline">
+                <input class="form-control mr-sm-3" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="search">
+                <button class="btn my-2 my-sm-0" (click)="onSearchClick()">Search</button>
+                <a class="navbar-brand" (click)="onLogOffClick()">Log off</a>
+            </div>
+        </div>
+    </nav>
+</div>

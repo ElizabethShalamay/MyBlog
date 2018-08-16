@@ -1,0 +1,15 @@
+footer{
+    height: 35px;
+    width: 100%;
+    box-shadow: 0 0 6px rgba(0,0,0,0.5);
+    background-color: #4f4a47;
+    position: fixed;
+    bottom: 0px;
+    color: #e1d7c8;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+a {
+    text-decoration: none;
+    color: #e1d7c8;
+    font-weight: 700;
+}

@@ -1,0 +1,13 @@
+@import "../posts/posts.component.css";
+.container-column{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+.container{
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}

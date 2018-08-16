@@ -1,0 +1,14 @@
+.comment-creator {
+    margin: 15px 15px 25px;
+    max-height: 220px;
+    min-height: 180px;
+    border: 0;
+}
+
+    .comment-creator .button-submit {
+        margin: 0;
+    }
+
+        .comment-creator .button-submit:hover {
+            margin: 0;
+        }

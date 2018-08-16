@@ -1,0 +1,13 @@
+<form class="form-group form-control">
+  <input type="text" class="form-control" placeholder="Login" 
+    (input)="onLoginInput($event.target.value)" />
+
+  <input type="password" class="form-control" placeholder="Password" 
+    (input)="onPasswordInput($event.target.value)" />
+  <input type="password" class="form-control" placeholder="Confirm Password" 
+    (input)="onConfirmPasswordInput($event.target.value)"/>
+
+  <div class="button-group">
+    <button type="button" class="button-submit" (click)="onRegisterClick()">Register</button>
+  </div>
+</form>

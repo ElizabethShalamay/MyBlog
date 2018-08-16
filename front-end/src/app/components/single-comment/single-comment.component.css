@@ -1,0 +1,42 @@
+.comment-body {
+    font-size: 14px;
+    margin: 0 30px 0 0;
+}
+
+    .comment-body + a {
+        font-size: 14px;
+        font-weight: 400;
+        color: #726e6b;
+    }
+
+        .comment-body + a:hover {
+            text-decoration: none;
+            color: #e1d7c8;
+            font-weight: 400;
+        }
+
+.comment-heading {
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.comment-heading .date {
+    float: none;
+    display: inline;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0 15px 0;
+}
+
+.answer.answer {
+    text-decoration: none;
+    color: #4f4a47;
+    font-weight: 700;
+}
+    
+.answer.answer:hover {
+    text-decoration: none;
+    color: #e1d7c8;
+    font-weight: 700;
+}

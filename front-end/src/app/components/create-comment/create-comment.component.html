@@ -1,0 +1,6 @@
+<div class="comment-creator">
+  <div>
+    <textarea cols="50" rows="8" style="max-width: 100%" (input)="onCommentInput($event.target.value)"></textarea>
+  </div>
+  <button type="button" class="button-submit" (click)="addComment()">Add</button>
+</div>

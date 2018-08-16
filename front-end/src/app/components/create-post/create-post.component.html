@@ -1,0 +1,40 @@
+<div class="creator-form">
+  <div class="creator heading">
+    <h3>Heading</h3>
+    <textarea class="form-control" rows="1" cols="200" 
+    (input)="onHeadingInput($event.target.value)">{{post.Title}}</textarea>
+  </div>
+  <div class="creator description">
+      <h3>Description</h3>
+    <textarea class="form-control" rows="5" cols="200" 
+    (input)="onDescriptionInput($event.target.value)">{{post.Description}}</textarea>
+  </div>
+  <div class="creator text">    
+    <h3>Text</h3>
+    <textarea class="form-control" rows="10" cols="200" 
+    (input)="onTextInput($event.target.value)">{{post.Text}}</textarea>
+  </div>
+  <div class="tags">
+      <fieldset class="form-group">
+          <input class="form-control"
+            type="text"
+            placeholder="Enter tags"
+            [(ngModel)]="tagField"
+            
+            (keyup.enter)="addTag()" />
+
+          <div class="tag-list">
+            <span *ngFor="let tag of post.Tags"
+              class="tag-default tag-pill">
+              <i class="ion-close-round" (click)="removeTag(tag)">
+              {{ tag }}</i>
+            </span>
+          </div>
+        </fieldset>
+  </div>
+  <div class="button-group">
+    <button type="button" class="button-submit" 
+    (click)="addPost()">Create</button>
+  </div>
+</div>
+<!-- (input)="onTagFieldInput($event.target.value)" -->

@@ -1,0 +1,8 @@
+<ul *ngIf="comments">
+  <li *ngFor="let comment of comments">
+    <app-single-comment [comment]="comment"></app-single-comment>
+    <div *ngIf="comment.Children.length > 0">
+      <app-comments [comments]="comment.Children"></app-comments>
+    </div>
+  </li>
+</ul>

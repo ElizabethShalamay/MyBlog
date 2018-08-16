@@ -1,0 +1,36 @@
+#login-form {
+    margin-top: 70px;
+    text-align: center;
+}
+.form-control {
+    border: 0;
+    min-height: 35px;
+    width: 250px;
+    text-align: center;
+    font-size: 20px;
+    display: block;
+    margin: 15px auto;
+}
+.button-submit {
+    display: block;
+    margin: 15px auto 5px;
+    border: 0;
+    background-color: #e1d7c8;
+    color: #fdfdfd;
+    font-size: 20px;
+    font-weight: 700;
+    height: 40px;
+    width: 250px;
+}
+
+    .button-submit:hover {
+        display: block;
+        margin: 15px auto 5px;
+        border: 0;
+        background-color: #4f4a47;
+        color: #fdfdfd;
+        font-size: 20px;
+        font-weight: 700;
+        height: 40px;
+        width: 250px;
+    }

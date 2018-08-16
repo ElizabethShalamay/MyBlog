@@ -1,0 +1,27 @@
+.main-post {
+    float: left;
+    border-left: 6px solid #e1d7c8;
+    box-shadow: 0 2px 6px 0;
+    /*height: 400px;*/
+    width: 750px;
+    /*padding: 10px;*/
+    margin-bottom: 30px;
+}
+
+    .main-post hr {
+        width: 600px;
+    }
+
+.heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 5px 10px;
+    background-color: #f6ece1;
+}
+
+.date {
+        float: right;
+        font-size: 14px;
+        margin: 6px 8px 0;
+    }

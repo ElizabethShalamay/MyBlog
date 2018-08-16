@@ -1,0 +1,15 @@
+{
+  "/Token/*":{
+    "target": "http://localhost:53618",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
+  },
+  
+    "/api/*": {
+      "target": "http://localhost:53618",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
+    }
+  }

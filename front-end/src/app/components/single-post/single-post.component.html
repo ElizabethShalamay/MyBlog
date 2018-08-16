@@ -1,0 +1,27 @@
+<a routerLink="/creator/{{post.Id}}">
+  + Edit post</a>
+<div class="main-post container-column">
+  <div class="heading">
+    <p>{{post.Title}}</p>
+    <p class="date">
+      <span style="font-weight:500">{{post.AuthorName}}</span>
+      {{post.PostedAt | date: 'dd/MM/yyyy hh:mm'}}
+    </p>
+  </div>
+
+  <div class="text">
+    <p [innerHtml]="post.Text"></p>
+  </div>
+  <div class="container">
+      Tags: <li *ngFor="let tag of post.Tags">
+        <a (click)="search(tag)">{{tag}}</a>
+      </li>
+    </div>
+  <hr /> 
+  <h3>Comments</h3>
+  <app-comments></app-comments>
+  <div class="comment-creator">
+      <h3>Add comment</h3>
+    <app-create-comment></app-create-comment>
+  </div>
+</div>

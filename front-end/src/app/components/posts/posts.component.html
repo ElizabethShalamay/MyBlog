@@ -1,0 +1,42 @@
+<a routerLink="/creator">
+  + Add new post</a>
+<div class="container">
+  <div class="container-column" *ngIf="posts">
+    <li *ngFor="let post of posts">
+      <div class="post">
+        <div class="info heading">
+          {{post.Title}}
+          <p class="date">
+            {{post.PostedAt | date: 'dd/MM/yyyy hh:mm'}}
+          </p>
+        </div>
+        <div class="post-text">
+          <p [innerHtml]="post.Description"></p>
+          <div class="container">
+            <li *ngFor="let tag of post.Tags">
+              <a (click)="search(tag)">{{tag}}</a>
+            </li>
+            <a class="open-post" routerLink="/posts/{{post.Id}}">
+              <span class="badge">Open post >></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </li>
+    <div class="container">
+      <ul class="pagination">
+        <li>
+          <button class="button-submit" type="button"  [disabled]="paginationInfo.previousPage == 'No'" (click)="goPrev()"> << Previous</button>
+        </li>
+        <li>
+          <button class="button-submit" type="button" [disabled]="paginationInfo.nextPage == 'No'" (click)="goNext()">Next >> </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="news">
+    <app-news></app-news>
+  </div>
+</div>

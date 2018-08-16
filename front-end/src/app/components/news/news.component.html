@@ -1,0 +1,18 @@
+<div class="heading">New posts:</div>
+
+<div *ngFor="let item of news">
+  <div class="preview">
+    <p>
+      <a class="open-post" routerLink="/posts/{{item.Id}}">
+        <span>{{item.Title}} <span class="badge">{{item.Comments}}</span></span>
+      </a>
+      
+    </p>
+    <p class="user-name">{{item.AuthorName}}</p>
+    <p class="date">{{item.PostedAt | date: 'dd/MM/yyyy hh:mm'}}</p>
+  </div>
+</div>
+
+<div *ngFor="let tag of tags">
+    <span (click)="onTagClick(tag.Name)" class="badge">{{tag.Name}}</span>
+</div>

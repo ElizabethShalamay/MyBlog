@@ -1,0 +1,22 @@
+<div>
+  <div class="comment-heading">
+    <span>{{comment.AuthorName}}</span>
+    <span style='padding-left:10px;'> </span>
+    <div class="date">
+      <span>{{comment.Date | date: 'dd/MM/yyyy hh:mm'}}</span>
+    </div>
+  </div>
+  <div class="comment-body">
+    <span>{{comment.Text}}</span>
+  </div>
+
+  <div>
+    <a class="answer" (click)="answerComment()">answer </a>
+    <span>&nbsp;&nbsp;</span>
+    <a class="answer" (click)="deleteComment()">delete</a>
+  </div>
+  <div *ngIf="answer">
+    <app-create-comment [parentId]="comment.Id"></app-create-comment>
+  </div>
+<br/>
+</div>

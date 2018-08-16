@@ -1,0 +1,31 @@
+<a routerLink="/creator">+ Add new post</a>
+<h2>Search Results</h2>
+<div class="container"><div class="container-column">
+  <div *ngIf="posts">
+    <li *ngFor="let post of posts">
+      <div class="post">
+        <div class="info heading">
+          {{post.Title}}
+          <p class="date">
+            {{post.PostedAt | date: 'dd/MM/yyyy hh:mm'}}
+          </p>
+        </div>
+        <div class="post-text">
+          <p>{{post.Description}}</p>
+          <div class="container">
+            <li *ngFor="let tag of post.Tags">
+              <a (click)="search(tag)">{{tag}}</a>
+            </li>
+            <a class="open-post" routerLink="/posts/{{post.Id}}">
+              <span class="badge">Open post >></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </li>
+  </div>
+</div>
+<div class="news">
+    <app-news></app-news>
+  </div>
+</div>
