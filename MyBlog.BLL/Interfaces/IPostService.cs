@@ -21,6 +21,7 @@ namespace MyBlog.BLL.Interfaces
 
         void AddPost(PostDTO postDTO, IList<string> tags);
         void DeletePost(int id);
+        void UpdatePost(PostDTO postDTO);
 
         int CountComments(int postId);
     }

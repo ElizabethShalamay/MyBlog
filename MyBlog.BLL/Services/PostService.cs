@@ -14,6 +14,10 @@ namespace MyBlog.BLL.Services
 {
     public class PostService : IPostService
     {
+
+        //TODO: write method GetTotalPages(); 
+        // get data from BlogSettings 
+
         IUnitOfWork Db { get; set; }
         public PageInfo PageInfo { get; set; }
 
@@ -102,6 +106,32 @@ namespace MyBlog.BLL.Services
             Db.PostManager.Delete(id);
             Db.SaveAsync();
         }
+        public void UpdatePost(PostDTO postDTO)
+        {
+            var post = Db.PostManager.Get(postDTO.Id);
+            var tags = Db.TagManager.Get().ToList();
+            post = Mapper.Map<PostDTO, Post>(postDTO);
+            
+            post.Tags =tags.Where(tag => tag.Posts.Contains(post)).ToList();
+            post.Tags.ToList().RemoveAll(tag => !postDTO.Tags.Contains(tag.Name));
+            Db.PostManager.Update(post, post.Id);
+
+            
+            foreach(var tag in postDTO.Tags)
+            {
+                if (Db.TagManager.Get(t => t.Name == tag).FirstOrDefault() == null)
+                {
+                    var t = new Tag() { Name = tag };
+                    post.Tags.Add(t);
+                    t.Posts = new List<Post>();
+                    t.Posts.Add(Db.PostManager.Get(post.Id));
+                    Db.TagManager.Create(t);                  
+                }
+            }
+
+            Db.SaveAsync();
+        }
+
 
         private bool Contains(Post post, string text)
         {

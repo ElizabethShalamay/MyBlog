@@ -20,7 +20,7 @@ namespace MyBlog.BLL.Infrastructure
             config.CreateMap<Tag, TagDTO>();
 
             config.CreateMap<UserDTO, User>();
-            config.CreateMap<PostDTO, Post>();
+            config.CreateMap<PostDTO, Post>().ForMember(p => p.Tags, opt => opt.Ignore());
             config.CreateMap<CommentDTO, Comment>();
             config.CreateMap<TagDTO, Tag>();
 

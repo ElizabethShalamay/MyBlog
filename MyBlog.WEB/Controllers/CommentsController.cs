@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace MyBlog.WEB.Controllers
 {
-    [Authorize(Roles = "User")]
+    [Authorize]
     public class CommentsController : ApiController
     {
         ICommentService commentService;
@@ -43,10 +43,14 @@ namespace MyBlog.WEB.Controllers
             commentService.AddComment(Mapper.Map<CommentViewModel, CommentDTO>(comment));
         }
 
-        [Route("api/comments")]
-        public void PutComment([FromBody] CommentViewModel comment)
+        [Route("api/comments/{id}")]
+        public void PutComment(int id, [FromBody] CommentViewModel comment)
         {
-
+            if (id == comment.Id)
+            {
+                var commentDTO = Mapper.Map<CommentViewModel, CommentDTO>(comment);
+                commentService.UpdateComment(commentDTO);
+            }
         }
 
         [Route("api/comments")]

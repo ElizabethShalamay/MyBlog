@@ -1,6 +1,5 @@
 ﻿using MyBlog.DAL.EF;
 using MyBlog.DAL.Entities;
-using MyBlog.DAL.Identity;
 using MyBlog.DAL.Repository;
 using MyBlog.DAL.Interfaces;
 using Microsoft.AspNet.Identity.EntityFramework;

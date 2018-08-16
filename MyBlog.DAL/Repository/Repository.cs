@@ -30,28 +30,6 @@ namespace MyBlog.DAL.Repository
             return table.Where(predicate).AsEnumerable();
         }
 
-        // Method for additional operations (filtration, ordering) using IQueryable
-        //public IEnumerable<T> Get(
-        //    Expression<Func<T, bool>> filter = null,
-        //    Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
-        //{
-        //    IQueryable<T> query = table;
-
-        //    if (filter != null)
-        //    {
-        //        query = query.Where(filter);
-        //    }
-
-        //    if (orderBy != null)
-        //    {
-        //        return orderBy(query).ToList();
-        //    }
-        //    else
-        //    {
-        //        return query.ToList();
-        //    }
-        //}
-
         public IEnumerable<T> Get()
         {
             return table.AsEnumerable();
@@ -63,11 +41,19 @@ namespace MyBlog.DAL.Repository
             blog.SaveChanges();
         }
 
-        public void Update(T entity)
+        public void Update(T entity, int id)
         {
-            blog.Entry(entity).State = EntityState.Modified;
+            T entry = Get(id);
+            if(entry == null)
+            {
+                table.Add(entity);
+            }
+            else
+            {
+                blog.Entry(entry).CurrentValues.SetValues(entity);
+            }
+            blog.Entry(entry).State = EntityState.Modified;
             blog.SaveChanges();
-
         }
 
         public void Delete(int id)

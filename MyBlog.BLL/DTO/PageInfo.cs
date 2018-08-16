@@ -16,9 +16,4 @@ namespace MyBlog.BLL.DTO
             get { return (int)Math.Ceiling((decimal)TotalItems / PageSize); }
         }
     }
-    public class Page<T>
-    {
-        public IEnumerable<T> Items { get; set; }
-        public PageInfo PageInfo { get; set; }
-    }
 }

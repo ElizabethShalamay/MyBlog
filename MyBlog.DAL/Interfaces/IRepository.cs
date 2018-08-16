@@ -10,10 +10,10 @@ namespace MyBlog.DAL.Interfaces
     public interface IRepository<T> where T : class
     {
         T Get(int id);
-        IEnumerable<T> Get(Func<T, bool> predicate); // TODO: ???
+        IEnumerable<T> Get(Func<T, bool> predicate);
         IEnumerable<T> Get();
         void Create(T entity);
-        void Update(T entity);
+        void Update(T entity, int id);
         void Delete(int id);
     }
 }

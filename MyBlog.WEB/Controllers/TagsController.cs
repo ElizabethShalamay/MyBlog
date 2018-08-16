@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace MyBlog.WEB.Controllers
 {
-    [Authorize(Roles = "User")]
+    [Authorize]
     public class TagsController : ApiController
     {
         ITagService tagService;
@@ -34,8 +34,8 @@ namespace MyBlog.WEB.Controllers
             tagService.AddTag(tagDTO);
         }
 
-        [Route("api/tags")]
-        public void Put([FromBody] TagViewModel tag)
+        [Route("api/tags/{id}")]
+        public void Put(int id, [FromBody] TagViewModel tag)
         {
             TagDTO tagDTO = Mapper.Map<TagViewModel, TagDTO>(tag);
             tagService.UpdateTag(tagDTO);

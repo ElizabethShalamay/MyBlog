@@ -76,7 +76,7 @@ namespace MyBlog.BLL.Services
             if (commentDTO != null)
             {
                 var comment = Mapper.Map<CommentDTO, Comment>(commentDTO);
-                Db.CommentManager.Update(comment);
+                Db.CommentManager.Update(comment, comment.Id);
             }
         }
     }

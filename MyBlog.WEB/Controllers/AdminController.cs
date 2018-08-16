@@ -5,6 +5,10 @@ using System.Net;
 using System.Net.Http;
 using MyBlog.BLL.Interfaces;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
+using MyBlog.WEB.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using AutoMapper;
 
 namespace MyBlog.WEB.Controllers
 {
@@ -16,11 +20,12 @@ namespace MyBlog.WEB.Controllers
         ICommentService commentService;
         ApplicationUserManager userManager;
 
-        public AdminController(IPostService postService, ICommentService commentService, ApplicationUserManager userManager)
+        public AdminController(IPostService postService, ICommentService commentService)
         {
             this.postService = postService;
             this.commentService = commentService;
-            this.userManager = userManager;
+            var userStore = new UserStore<ApplicationUser>(new ApplicationDbContext());
+            userManager = new ApplicationUserManager(userStore);
         }
 
         [Route("users")]
@@ -30,7 +35,7 @@ namespace MyBlog.WEB.Controllers
 
             if(users != null)
             {
-                return Ok(users);
+                return Ok(Mapper.Map<IEnumerable<UserViewModel>>(users));
             }
             return NotFound();
         }

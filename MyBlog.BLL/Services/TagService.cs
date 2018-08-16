@@ -42,7 +42,7 @@ namespace MyBlog.BLL.Services
             if (tagDTO != null)
             {
                 var tag = Mapper.Map<TagDTO, Tag>(tagDTO);
-                Db.TagManager.Update(tag);
+                Db.TagManager.Update(tag, tag.Id);
                 Db.SaveAsync();
             }
         }

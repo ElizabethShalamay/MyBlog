@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace MyBlog.WEB.Controllers
 {
-    [Authorize(Roles ="User")]
+    [Authorize]
     public class PostsController : ApiController
     {
         IPostService postService;
@@ -74,6 +74,11 @@ namespace MyBlog.WEB.Controllers
         [Route("api/posts/{id}")]
         public void Put(int id, [FromBody] PostViewModel post)
         {
+            if (id == post.Id)
+            {
+                var postDTO = Mapper.Map<PostViewModel, PostDTO>(post);
+                postService.UpdatePost(postDTO);
+            }
         }
 
         [Route("api/posts/{id}")]

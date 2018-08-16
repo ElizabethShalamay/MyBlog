@@ -1,5 +1,4 @@
 ﻿using MyBlog.DAL.Entities;
-using MyBlog.DAL.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
