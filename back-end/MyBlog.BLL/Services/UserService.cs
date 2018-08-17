@@ -29,14 +29,7 @@ namespace MyBlog.BLL.Services
         {
             User user = Mapper.Map<User>(userDTO);
             return await db.AppUserManager.CreateAsync(user, password);
-        }
-
-
-        UserData IUserService.Find(string userName, string password)
-        {
-            User user = db.AppUserManager.FindAsync(userName, password).Result;
-            return Mapper.Map<UserData>(user);
-        }
+        }        
 
         UserDTO IUserService.GetUserById(string id)
         {

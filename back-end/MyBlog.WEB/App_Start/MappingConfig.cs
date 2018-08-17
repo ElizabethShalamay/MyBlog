@@ -1,11 +1,6 @@
-﻿using AutoMapper;
-using AutoMapper.Configuration;
+﻿using AutoMapper.Configuration;
 using MyBlog.BLL.DTO;
 using MyBlog.WEB.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace MyBlog.WEB.App_Start
 {
@@ -21,9 +16,7 @@ namespace MyBlog.WEB.App_Start
 
             config.CreateMap<PostDTO, PostViewModel>();
             config.CreateMap<CommentDTO, CommentViewModel>();
-            config.CreateMap<TagDTO, TagViewModel>();
-
-            //config.CreateMap<ApplicationUser, UserViewModel>();
+            config.CreateMap<TagDTO, TagViewModel>();           
 
             return config;
         }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using MyBlog.DAL.Entities;
 using System;
-using System.Threading.Tasks;
 
 namespace MyBlog.DAL.Interfaces
 {
@@ -13,8 +12,6 @@ namespace MyBlog.DAL.Interfaces
         IRepository<Tag> TagManager { get; }
 
         UserManager<User> AppUserManager { get; }
-        RoleManager<Role> AppRoleManager { get; }
-
-        Task SaveAsync();
+        RoleManager<Role> AppRoleManager { get; }      
     }
 }

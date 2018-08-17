@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using MyBlog.BLL.DTO;
-using System.Web;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.Owin;
@@ -14,8 +10,6 @@ namespace MyBlog.BLL.Interfaces
     public interface IUserService
     {
         Task<IdentityResult> CreateUser(UserDTO userDTO, string password);
-
-        UserData Find(string userName, string password);
         Task<ClaimsIdentity> GenerateUserIdentityAsync(IOwinContext context, string login, string password);
 
         UserDTO GetUserById(string id);

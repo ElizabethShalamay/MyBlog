@@ -1,10 +1,7 @@
 ﻿using MyBlog.DAL.Entities;
 using MyBlog.DAL.Interfaces;
 using System;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace MyBlog.DAL.Repository
@@ -57,11 +54,6 @@ namespace MyBlog.DAL.Repository
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        async Task IUnitOfWork.SaveAsync()
-        {
-            await blog.SaveChangesAsync();
         }
     }
 }

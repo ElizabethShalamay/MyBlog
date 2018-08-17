@@ -6,8 +6,6 @@ using MyBlog.DAL.Entities;
 
 namespace MyBlog.DAL    
 {
-    // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
-
     public class ApplicationUserManager : UserManager<User>
     {
         public ApplicationUserManager(IUserStore<User> store)

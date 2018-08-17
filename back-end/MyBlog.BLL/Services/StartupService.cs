@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using MyBlog.DAL;
-using MyBlog.DAL.Entities;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.OAuth;
-using System;
+﻿using MyBlog.DAL;
 using Owin;
 
 namespace MyBlog.BLL.Services
