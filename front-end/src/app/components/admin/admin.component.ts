@@ -34,15 +34,25 @@ export class AdminComponent implements OnInit {
   }
 
   approvePost(id: number){
-    var post = this.posts.find(p => p.Id == id);
+    let post = this.posts.find(p => p.Id == id);
     post.IsApproved = true;
     this.postService.updatePost(post).subscribe();
   }
 
+  deletePost(id:number){
+    let post = this.posts.find(p => p.Id == id);
+    this.postService.removePost(post).subscribe();
+  }
+
   approveComment(id: number){
-    var comment = this.comments.find(c => c.Id == id);
+    let comment = this.comments.find(c => c.Id == id);
     comment.IsApproved = true;
     this.commentService.updateComment(comment).subscribe();
+  }
+
+  deleteComment(id:number){
+    let comment = this.comments.find(c => c.Id == id);
+    this.commentService.removeComment(comment).subscribe();
   }
 
   ngOnInit() {

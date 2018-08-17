@@ -28,6 +28,11 @@ export class CommentsService {
     return this.httpClient.get<Comment[]>(url, { headers: this.accService.getAuthHeaders() });
   }
 
+  getComment(id: number): Observable<Comment> {
+    const url = `${this.baseUrl}/${id}`;
+    return this.httpClient.get<Comment>(url, { headers: this.accService.getAuthHeaders() });
+  }
+
   addComment(postId: number, text: string, parentId?: number): Observable<Comment> {
     const comment: Comment = {
       Id: 0,

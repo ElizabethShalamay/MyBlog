@@ -12,7 +12,12 @@ import { Location } from "@angular/common";
 export class CreateCommentComponent implements OnInit {
 
   @Input() parentId: number = 0;
+  @Input() comment:Comment = new Comment();
+
   text: string;
+
+  
+
   constructor(private commentsService: CommentsService,
     private location: Location,
     private route: ActivatedRoute,
@@ -23,10 +28,36 @@ export class CreateCommentComponent implements OnInit {
   }
 
   addComment() {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.commentsService.addComment(id, this.text, this.parentId).subscribe();
+    console.log(this.comment.Id);
+    if (this.comment.Id) {
+      this.comment.IsApproved = false;
+      this.commentsService.updateComment(this.comment).subscribe();
+    }
+    else {
+      const id = +this.route.snapshot.paramMap.get('id');
+      this.commentsService.addComment(id, this.text, this.parentId).subscribe();    
+    }
   }
 
   ngOnInit() {
+
+    if(this.comment){
+      this.text = this.comment.Text;
+    }
+    // const id = +this.route.snapshot.paramMap.get('id');
+    // console.log(id);
+
+    // if (id == 0) {
+    //   this.comment = new Comment();
+    // }
+    // else {
+    //   this.commentsService.getComment(id).subscribe(
+    //     c => {
+    //       this.comment = c;
+    //       console.log(c);
+    //       console.log(this.comment);
+    //     });
+
+    // }
   }
 }

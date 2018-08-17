@@ -89,8 +89,14 @@ namespace MyBlog.BLL.Services
         }
         public IEnumerable<PostDTO> GetPostsByText(string text)
         {
-            IEnumerable<Post> posts = Db.PostManager.Get(p => Contains(p, text));
-            return Mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(posts);
+            IEnumerable<Post> posts = Db.PostManager.Get(p => Contains(p, text)).ToList();
+            IEnumerable<PostDTO> postDTOs = Mapper.Map<IEnumerable<PostDTO>>(posts);
+
+            foreach (PostDTO post in postDTOs)
+            {
+                post.AuthorName = SetAuthorName(post.UserId);
+            }
+            return postDTOs;
         }
         public IEnumerable<PostDTO> GetPostsByAuthor(string id)
         {

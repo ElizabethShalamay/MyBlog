@@ -50,11 +50,9 @@ namespace MyBlog.BLL.Services
                 .Take(pageSize);
 
             IEnumerable<CommentDTO> commentsDTO = Mapper.Map<IEnumerable<CommentDTO>>(comments);
-            foreach (CommentDTO comment in commentsDTO)
-            {
-                comment.Children = commentsDTO.Where(c => c.ParentId == comment.Id).AsEnumerable();
-            }
-            commentsDTO = commentsDTO.Where(c => c.ParentId == 0);
+
+            commentsDTO = CreateCommentTree(commentsDTO, approved);
+           
             return commentsDTO;
         }
 
@@ -64,18 +62,17 @@ namespace MyBlog.BLL.Services
                 .OrderByDescending(p => p.Date)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize);
+
             IEnumerable<CommentDTO> commentsDTO = Mapper.Map<IEnumerable<CommentDTO>>(comments);
-            foreach (CommentDTO comment in commentsDTO)
-            {
-                comment.Children = commentsDTO.Where(c => c.ParentId == comment.Id).AsEnumerable();
-            }
-            commentsDTO = commentsDTO.Where(c => c.ParentId == 0);
+
+            commentsDTO = CreateCommentTree(commentsDTO, approved);
+
             return commentsDTO;
         }
 
         bool ICommentService.UpdateComment(CommentDTO commentDTO)
         {
-            if (commentDTO != null)
+            if (commentDTO == null)
                 return false;
 
             Comment comment = Mapper.Map<Comment>(commentDTO);
@@ -84,16 +81,11 @@ namespace MyBlog.BLL.Services
             return result > 0;
         }
 
-        private IEnumerable<CommentDTO> SetAuthorsNames(IEnumerable<CommentDTO> comments) // use automapper!
+        private IEnumerable<CommentDTO> CreateCommentTree(IEnumerable<CommentDTO> commentsDTO, bool approved)
         {
-            foreach (CommentDTO comment in comments)
-            {
-                comment.AuthorName = Db.AppUserManager.FindByIdAsync(comment.AuthorId).Result.UserName;
-                SetAuthorsNames(comment.Children);
-            }
+            List<CommentDTO> comments = approved? commentsDTO.ToList() : commentsDTO.Where(c => c.ParentId == 0).ToList();
+            comments.ForEach(comment=> comment.Children = commentsDTO.Where(c => c.ParentId == comment.Id));
             return comments;
         }
-
-        /// build tree view commnets private method used in GetComments
     }
 }

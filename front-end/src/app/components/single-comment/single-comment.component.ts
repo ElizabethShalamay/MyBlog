@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommentsService } from '../../services/comments/comments.service'
 import { Comment } from "../../models/comment";
+import { AccountService } from '../../services/account/account.service';
 
 @Component({
   selector: 'app-single-comment',
@@ -9,19 +10,34 @@ import { Comment } from "../../models/comment";
 })
 export class SingleCommentComponent implements OnInit {
 
-  @Input() comment:Comment;
+  @Input() comment: Comment;
   answer: boolean = false;
+  edit: boolean = false;
+  isOwn: boolean;// = this.accService.authentication.userName == this.comment.AuthorName;
 
-  constructor(private commentsService: CommentsService) { }
+  constructor(private commentsService: CommentsService,
+    private accService: AccountService) { }
 
-  deleteComment(){
-    this.commentsService.removeComment(this.comment).subscribe();
+  deleteComment() {
+    if (this.isOwn) {
+      this.commentsService.removeComment(this.comment).subscribe();
+    }
   }
 
-  answerComment(){
-    this.answer = !this.answer;
+  updateComment() {
+    if (this.isOwn) {
+      this.edit = !this.edit;
+      // this.comment.IsApproved = false;
+      // this.commentsService.updateComment(this.comment).subscribe();
+    }
+  }
+
+  answerComment() {
+    if (!this.isOwn)
+      this.answer = !this.answer;
   }
 
   ngOnInit() {
+    this.isOwn = this.accService.authentication.userName == this.comment.AuthorName;
   }
 }

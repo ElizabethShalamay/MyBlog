@@ -15,6 +15,7 @@ import { PaginationInfo } from "../../models/pagination-data";
 export class PostsService {
 
   baseUrl: string = "api/posts";
+  searchUrl: string = "api/search";
   posts: Post[] = [];
   paginationInfo: PaginationInfo;
 
@@ -27,9 +28,9 @@ export class PostsService {
     return this.httpClient.get<Post>(url, { headers: this.accService.getAuthHeaders() });
   }
 
-  getPosts(page: number, url:string = ""): Observable<HttpResponse<Post[]>> {
+  getPosts(page: number, url: string = ""): Observable<HttpResponse<Post[]>> {
     url = url ? `${url}?page=${page}` : `${this.baseUrl}?page=${page}`;
-    return this.httpClient.get<Post[]>(url, {headers: this.accService.getAuthHeaders() , observe: 'response'});
+    return this.httpClient.get<Post[]>(url, { headers: this.accService.getAuthHeaders(), observe: 'response' });
   }
 
   getNews(): Observable<News[]> {
@@ -45,7 +46,11 @@ export class PostsService {
   search(text: string): Observable<Post[]> {
     this.posts = [];
     text = encodeURIComponent(text);
-    const url = `${this.baseUrl}?text=${text}`;
+
+    let searchTag = text.replace(encodeURIComponent("#"), "");
+    const url = text.startsWith(encodeURIComponent("#")) ?
+      `${this.searchUrl}/tag?tag=${searchTag}` :
+      `${this.searchUrl}/text?text=${text}`;
     return this.httpClient.get<Post[]>(url, { headers: this.accService.getAuthHeaders() });
   }
 

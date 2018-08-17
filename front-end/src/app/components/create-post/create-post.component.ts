@@ -43,8 +43,9 @@ export class CreatePostComponent implements OnInit {
   }
   addPost() {
     console.log(this.post.Id);
-    if(this.post.Id){
-          this.postService.updatePost(this.post).subscribe();
+    if (this.post.Id) {
+      this.post.IsApproved = false;
+      this.postService.updatePost(this.post).subscribe();
     }
     else {
       this.postService.addPost(this.post).subscribe();
@@ -65,7 +66,7 @@ export class CreatePostComponent implements OnInit {
           console.log(p);
           console.log(this.post);
         });
-        
-    }    
+
+    }
   }
 }

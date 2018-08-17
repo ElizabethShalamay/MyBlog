@@ -11,12 +11,17 @@
   </div>
 
   <div>
-    <a class="answer" (click)="answerComment()">answer </a>
+    <a [class.disabled]="isOwn"class="answer" (click)="answerComment()">answer </a>
     <span>&nbsp;&nbsp;</span>
-    <a class="answer" (click)="deleteComment()">delete</a>
+    <a [class.disabled]="!isOwn" class="answer" (click)="updateComment()">edit</a>
+    <span>&nbsp;&nbsp;</span>
+    <a [class.disabled]="!isOwn"class="answer" (click)="deleteComment()">delete</a>
   </div>
   <div *ngIf="answer">
     <app-create-comment [parentId]="comment.Id"></app-create-comment>
+  </div>
+  <div *ngIf="edit">
+    <app-create-comment [comment]="comment"></app-create-comment>
   </div>
 <br/>
 </div>
