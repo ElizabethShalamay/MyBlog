@@ -23,7 +23,7 @@ namespace MyBlog.WEB.App_Start
             config.CreateMap<CommentDTO, CommentViewModel>();
             config.CreateMap<TagDTO, TagViewModel>();
 
-            config.CreateMap<ApplicationUser, UserViewModel>();
+            //config.CreateMap<ApplicationUser, UserViewModel>();
 
             return config;
         }

@@ -16,7 +16,6 @@ export class AccountService {
     isAuth: false,
     userName: ""
   };
-  AccessToken: string = '';
 
   @Output() getLoggedIn: EventEmitter<any> = new EventEmitter();
 

@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   login: string;
   password: string;
   tokenParam: TokenParams;
-
+S
 
   constructor(private router: Router,
     private accService: AccountService) { }
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.accService.signIn(loginModel)
       .subscribe(data => {
         this.tokenParam = data;
-        this.accService.AccessToken = data.access_token;
+        // this.accService.AccessToken = data.access_token;
         localStorage.setItem("Authorization", data.access_token);
 
         this.accService.authentication.userName = this.login;

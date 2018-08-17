@@ -3,6 +3,6 @@ export class PaginationInfo {
     pageSize: number;
     currentPage: number;
     totalPages: number;
-    previousPage: string;
-    nextPage: string;
+    previousPage: boolean;
+    nextPage: boolean;
 }

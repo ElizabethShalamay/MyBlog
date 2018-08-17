@@ -17,7 +17,7 @@ export class CommentsComponent implements OnInit {
   constructor(private commentsService: CommentsService,
     private route: ActivatedRoute) { }
 
-  getComments() {
+  getComments() { // todo: add pagination
     if(!this.comments.length)
       {
         const id = +this.route.snapshot.paramMap.get('id');

@@ -12,7 +12,7 @@ namespace MyBlog.WEB.Controllers
         {
             ViewBag.Title = "Home Page";
 
-            return View();
+            return View(); // redirect to help page
         }
     }
 }

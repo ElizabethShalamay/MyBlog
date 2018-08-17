@@ -7,14 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBlog.DAL.EF
+namespace MyBlog.DAL
 {
-    class BlogContext : IdentityDbContext<User>
+    public class BlogContext : IdentityDbContext<User>
     {
 
-        public BlogContext() : base("BlogConnection")
-        { }
-      
+        public BlogContext()
+            : base("BlogConnection", throwIfV1Schema: false)
+        {
+        }
+
+        public static BlogContext Create()
+        {
+            return new BlogContext();
+        }
+
+
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Tag> Tags { get; set; }

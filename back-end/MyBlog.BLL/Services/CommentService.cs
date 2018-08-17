@@ -21,19 +21,21 @@ namespace MyBlog.BLL.Services
 
         CommentDTO ICommentService.GetComment(int id)
         {
-            var comment = Db.CommentManager.Get(id);
+            Comment comment = Db.CommentManager.Get(id);
             return Mapper.Map<Comment, CommentDTO>(comment);
         }
 
-        void ICommentService.AddComment(CommentDTO commentDTO)
+        void ICommentService.AddComment(CommentDTO commentDTO, string userName)
         {
-            if (commentDTO != null)
-            {
-                var comment = Mapper.Map<CommentDTO, Comment>(commentDTO);
-                comment.Date = DateTime.Now;
-                Db.CommentManager.Create(comment);
-            }
-        }      
+            if (commentDTO == null)
+                return;
+
+            Comment comment = Mapper.Map<CommentDTO, Comment>(commentDTO);
+            comment.Date = DateTime.Now;
+            comment.AuthorId = Db.AppUserManager.FindByNameAsync(userName).Result.Id;
+
+            Db.CommentManager.Create(comment);
+        }
 
         void ICommentService.DeleteComment(int id)
         {
@@ -47,6 +49,7 @@ namespace MyBlog.BLL.Services
                 .OrderByDescending(p => p.Date)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize);
+
             var commentsDTO = Mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(comments);
             foreach (var comment in commentsDTO)
             {
@@ -63,7 +66,7 @@ namespace MyBlog.BLL.Services
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize);
             var commentsDTO = Mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(comments);
-            foreach(var comment in commentsDTO)
+            foreach (var comment in commentsDTO)
             {
                 comment.Children = commentsDTO.Where(c => c.ParentId == comment.Id).AsEnumerable();
             }
@@ -79,5 +82,17 @@ namespace MyBlog.BLL.Services
                 Db.CommentManager.Update(comment, comment.Id);
             }
         }
+
+        private IEnumerable<CommentDTO> SetAuthorsNames(IEnumerable<CommentDTO> comments) // use automapper!
+        {
+            foreach (var comment in comments)
+            {
+                comment.AuthorName = Db.AppUserManager.FindByIdAsync(comment.AuthorId).Result.UserName;
+                SetAuthorsNames(comment.Children);
+            }
+            return comments;
+        }
+
+        /// build tree view commnets private method used in GetComments
     }
 }

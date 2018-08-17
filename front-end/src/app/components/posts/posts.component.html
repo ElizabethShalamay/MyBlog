@@ -26,10 +26,10 @@
     <div class="container">
       <ul class="pagination">
         <li>
-          <button class="button-submit" type="button"  [disabled]="paginationInfo.previousPage == 'No'" (click)="goPrev()"> << Previous</button>
+          <button class="button-submit" type="button"  [disabled]="paginationInfo.previousPage" (click)="goPrev()"> << Previous</button>
         </li>
         <li>
-          <button class="button-submit" type="button" [disabled]="paginationInfo.nextPage == 'No'" (click)="goNext()">Next >> </button>
+          <button class="button-submit" type="button" [disabled]="paginationInfo.nextPage" (click)="goNext()">Next >> </button>
         </li>
       </ul>
     </div>

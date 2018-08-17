@@ -81,14 +81,11 @@
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Tag.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Managers\ApplicationUserManager.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
-    <Compile Include="Migrations\201808091136416_initial.cs" />
-    <Compile Include="Migrations\201808091136416_initial.Designer.cs">
-      <DependentUpon>201808091136416_initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808131423186_Approvements.cs" />
-    <Compile Include="Migrations\201808131423186_Approvements.Designer.cs">
-      <DependentUpon>201808131423186_Approvements.cs</DependentUpon>
+    <Compile Include="Migrations\201808171313259_initial.cs" />
+    <Compile Include="Migrations\201808171313259_initial.Designer.cs">
+      <DependentUpon>201808171313259_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,11 +100,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201808091136416_initial.resx">
-      <DependentUpon>201808091136416_initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808131423186_Approvements.resx">
-      <DependentUpon>201808131423186_Approvements.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808171313259_initial.resx">
+      <DependentUpon>201808171313259_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

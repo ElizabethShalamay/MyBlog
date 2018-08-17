@@ -13,15 +13,16 @@ namespace MyBlog.BLL.Services
 {
     public class TagService : ITagService
     {
-        IUnitOfWork Db { get; set; }
+        IUnitOfWork db;
+
         public TagService(IUnitOfWork unitOfWork)
         {
-            Db = unitOfWork;
+            db = unitOfWork;
         }
 
         IEnumerable<TagDTO> ITagService.GetAll()
         {
-            var tags = Db.TagManager.Get()
+            var tags = db.TagManager.Get()
                 .OrderByDescending(t => t.Posts.Count)
                 .Take(20);
             return Mapper.Map<IEnumerable<Tag>, IEnumerable<TagDTO>>(tags);
@@ -32,8 +33,8 @@ namespace MyBlog.BLL.Services
             if (tagDTO != null)
             {
                 var tag = Mapper.Map<TagDTO, Tag>(tagDTO);
-                Db.TagManager.Create(tag);
-                Db.SaveAsync();
+                db.TagManager.Create(tag);
+                db.SaveAsync();
             }
         }
 
@@ -42,8 +43,8 @@ namespace MyBlog.BLL.Services
             if (tagDTO != null)
             {
                 var tag = Mapper.Map<TagDTO, Tag>(tagDTO);
-                Db.TagManager.Update(tag, tag.Id);
-                Db.SaveAsync();
+                db.TagManager.Update(tag, tag.Id);
+                db.SaveAsync();
             }
         }
     }

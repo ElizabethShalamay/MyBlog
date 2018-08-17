@@ -13,7 +13,7 @@ namespace MyBlog.BLL.Interfaces
 
         PostDTO GetPost(int id);
         IEnumerable<PostDTO> GetPosts(int page, bool approved);
-        IEnumerable<PostDTO> GetPosts(string authorId, int pageNum);
+        IEnumerable<PostDTO> GetPosts(string authorName, int pageNum);
 
         IEnumerable<PostDTO> GetPostsByAuthor(string id);
         IEnumerable<PostDTO> GetPostsByText(string text);
@@ -24,5 +24,6 @@ namespace MyBlog.BLL.Interfaces
         void UpdatePost(PostDTO postDTO);
 
         int CountComments(int postId);
+        string GetPaginationData(int page);
     }
 }

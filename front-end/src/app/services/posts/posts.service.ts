@@ -28,7 +28,7 @@ export class PostsService {
   }
 
   getPosts(page: number, url:string = ""): Observable<HttpResponse<Post[]>> {
-    url = url == "" ? `${this.baseUrl}?page=${page}`: `${url}?page=${page}`;
+    url = url ? `${url}?page=${page}` : `${this.baseUrl}?page=${page}`;
     return this.httpClient.get<Post[]>(url, {headers: this.accService.getAuthHeaders() , observe: 'response'});
   }
 
@@ -37,9 +37,9 @@ export class PostsService {
     return this.httpClient.get<News[]>(url, { headers: this.accService.getAuthHeaders() });
   }
 
-  getPostsByAuthor(page: number, authorId: string): Observable<Post[]> {
+  getPostsByAuthor(page: number, authorId: string): Observable<any> {
     const url = `${this.baseUrl}?page=${page}&authorId=${authorId}`;
-    return this.httpClient.get<Post[]>(url, { headers: this.accService.getAuthHeaders() });
+    return this.httpClient.get<any>(url, { headers: this.accService.getAuthHeaders() });
   }
 
   search(text: string): Observable<Post[]> {

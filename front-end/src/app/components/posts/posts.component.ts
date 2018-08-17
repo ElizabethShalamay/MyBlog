@@ -27,21 +27,23 @@ export class PostsComponent implements OnInit {
     this.posts = [];
     this.postsService.getPosts(this.page).subscribe(
       (data) => {
-        this.posts.push(...data.body);
-        this.paginationInfo = JSON.parse(data.headers.get('paging-headers'));
+        this.posts.push(...data.body["posts"]);
+        console.log(data);
+        
+        this.paginationInfo = JSON.parse(data.body["pagination_info"]);
         console.log(this.paginationInfo);
       }
     );
   }
 
   goNext() {
-    if (this.paginationInfo.nextPage == 'Yes') {
+    if (this.paginationInfo.nextPage) {
       this.page++;
       this.getPosts();
     }
   }
   goPrev() {
-    if (this.paginationInfo.previousPage == 'Yes') {
+    if (this.paginationInfo.previousPage) {
       this.page--;
       this.getPosts();
     }
@@ -56,7 +58,9 @@ export class PostsComponent implements OnInit {
   getPostsByAuthor(authorId: string) {
     this.postsService.getPostsByAuthor(this.page, authorId).subscribe(
       data => {
-        this.posts.push(...data);
+        this.posts.push(...data.posts);
+        console.log(data);
+        
         this.page++;
       }
     );

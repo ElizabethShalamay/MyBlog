@@ -3,6 +3,7 @@ using MyBlog.BLL.DTO;
 using MyBlog.BLL.Interfaces;
 using MyBlog.DAL.Entities;
 using MyBlog.DAL.Interfaces;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,7 +15,6 @@ namespace MyBlog.BLL.Services
 {
     public class PostService : IPostService
     {
-
         //TODO: write method GetTotalPages(); 
         // get data from BlogSettings 
 
@@ -29,21 +29,31 @@ namespace MyBlog.BLL.Services
 
         public IEnumerable<PostDTO> GetPosts(int page, bool approved)
         {
-            var posts= Db.PostManager.Get(p => p.IsApproved == approved)
+            List<Post> posts = Db.PostManager.Get(p => p.IsApproved == approved)
                                   .OrderByDescending(p => p.PostedAt)
-                                  .Skip((page - 1)* PageInfo.PageSize)
+                                  .Skip((page - 1) * PageInfo.PageSize)
                                   .Take(PageInfo.PageSize).ToList();
-            return Mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(posts);
+            IEnumerable<PostDTO> postsDTO = Mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(posts);
+            foreach (var post in postsDTO)
+            {
+                post.AuthorName = SetAuthorName(post.UserId);
+                post.Comments = CountComments(post.Id);
+            }
+            return postsDTO;
         }
-        public IEnumerable<PostDTO> GetPosts(string authorId, int pageNum)
+        public IEnumerable<PostDTO> GetPosts(string authorName, int pageNum)
         {
-            var posts = Db.PostManager.Get().Where(p => p.UserId == authorId && p.IsApproved)
+            var posts = Db.PostManager.Get().ToList().Where(p => p.Author.UserName == authorName && p.IsApproved)
                                   .OrderByDescending(p => p.PostedAt)
-                                  .Skip((pageNum-1) * PageInfo.PageSize)
-                                  .Take(PageInfo.PageSize).AsEnumerable();
+                                  .Skip((pageNum - 1) * PageInfo.PageSize)
+                                  .Take(PageInfo.PageSize).ToList();
             var postDTOs = Mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(posts);
 
-            foreach(var post in posts)
+            foreach (var post in postDTOs)
+            {
+                post.AuthorName = SetAuthorName(post.UserId);
+            }
+            foreach (var post in posts)
             {
                 var currentPost = postDTOs.Where(p => p.Id == post.Id).First();
                 currentPost.Tags = post.Tags.Select(t => t.Name);
@@ -60,18 +70,22 @@ namespace MyBlog.BLL.Services
             var post = Db.PostManager.Get(id);
             if (post == null)
                 throw new ValidationException("Пост не найден");
-            return Mapper.Map<Post, PostDTO>(post);
+            PostDTO postDTO = Mapper.Map<Post, PostDTO>(post);
+            postDTO.AuthorName = SetAuthorName(post.UserId);
+            return postDTO;
         }
         public IEnumerable<PostDTO> GetPostsByTag(string tag)
         {
-            tag = tag.Substring(1);
-            var tagPosts = Db.TagManager.Get(t => t.Name == tag).ToList();
-            var posts = new List<Post>();
-            foreach (var item in tagPosts)
+            string formattedTag = tag.Substring(1);
+            var tagPosts = Db.TagManager.Get(t => t.Name == formattedTag).ToList();
+
+            List<Post> posts = tagPosts.SelectMany(item => item.Posts).ToList();
+            IEnumerable<PostDTO> postDTOs = Mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(posts);
+            foreach (var post in postDTOs)
             {
-                posts.AddRange(item.Posts);
+                post.AuthorName = SetAuthorName(post.UserId);
             }
-            return Mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(posts);
+            return postDTOs;
         }
         public IEnumerable<PostDTO> GetPostsByText(string text)
         {
@@ -86,20 +100,23 @@ namespace MyBlog.BLL.Services
 
         public void AddPost(PostDTO postDTO, IList<string> tags)
         {
-            if (postDTO != null)
+            if (postDTO == null)
+                return;
+
+            var post = Mapper.Map<PostDTO, Post>(postDTO);
+            post.UserId = GetUser(postDTO.AuthorName).Id;
+            post.PostedAt = DateTime.Now;
+            post.Text = FormatText(post.Text);
+
+            List<Tag> tagList = new List<Tag>();
+            foreach (string tag in tags) // select many
             {
-                var post = Mapper.Map<PostDTO, Post>(postDTO);
-                post.PostedAt = DateTime.Now;
-                post.Text = FormatText(post.Text);
-                List<Tag> tagList = new List<Tag>();
-                foreach(string tag in tags)
-                {
-                    tagList.Add(new Tag { Name = tag });
-                }
-                post.Tags = tagList;
-                Db.PostManager.Create(post);               
-                Db.SaveAsync();
+                tagList.Add(new Tag { Name = tag });
             }
+
+            post.Tags = tagList;
+            Db.PostManager.Create(post);
+            Db.SaveAsync();
         }
         public void DeletePost(int id)
         {
@@ -111,37 +128,57 @@ namespace MyBlog.BLL.Services
             var post = Db.PostManager.Get(postDTO.Id);
             var tags = Db.TagManager.Get().ToList();
             post = Mapper.Map<PostDTO, Post>(postDTO);
-            
-            post.Tags =tags.Where(tag => tag.Posts.Contains(post)).ToList();
+
+            post.Tags = tags.Where(tag => tag.Posts.Contains(post)).ToList();
             post.Tags.ToList().RemoveAll(tag => !postDTO.Tags.Contains(tag.Name));
             Db.PostManager.Update(post, post.Id);
 
-            
-            foreach(var tag in postDTO.Tags)
+            foreach (var tag in postDTO.Tags)
             {
-                if (Db.TagManager.Get(t => t.Name == tag).FirstOrDefault() == null)
+                if (!Db.TagManager.Get(t => t.Name == tag).Any())
                 {
-                    var t = new Tag() { Name = tag };
+                    var t = new Tag { Name = tag };
                     post.Tags.Add(t);
-                    t.Posts = new List<Post>();
-                    t.Posts.Add(Db.PostManager.Get(post.Id));
-                    Db.TagManager.Create(t);                  
+                    t.Posts = new List<Post> { Db.PostManager.Get(post.Id) };
+                    Db.TagManager.Create(t);
                 }
             }
 
             Db.SaveAsync();
         }
 
-
         private bool Contains(Post post, string text)
         {
             return post.Title.Contains(text) || post.Description.Contains(text) || post.Text.Contains(text);
         }
-        private string FormatText(string postText)
+
+        string IPostService.GetPaginationData(int page) // zasunut v posts service
         {
-            var text = "<p>"+ postText.Replace("\n", "</p><p>") + "</p>";
-            text = text.Replace("<p></p>", "");
-            return text;
+            var paginationMetadata = new
+            {
+                totalCount = PageInfo.TotalItems,
+                pageSize = PageInfo.PageSize,
+                currentPage = page,
+                totalPages = PageInfo.TotalPages,
+                previousPage = page > 1 ? true : false,
+                nextPage = page < PageInfo.TotalPages ? true : false
+            };
+            return JsonConvert.SerializeObject(paginationMetadata);
+        }
+
+        private string FormatText(string postText) // check format in frontend
+        {
+            return "<p>" + postText.Replace("\n", "</p><p>").Replace("<p></p>", "") + "</p>";
+        }
+
+        private string SetAuthorName(string id)
+        {         
+            return Db.AppUserManager.FindByIdAsync(id).Result.UserName;
+        }
+        private User GetUser(string name)
+        {
+            var user = Db.AppUserManager.FindByNameAsync(name);
+            return user.Result;
         }
     }
 }

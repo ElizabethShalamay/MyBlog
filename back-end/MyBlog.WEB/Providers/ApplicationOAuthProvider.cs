@@ -10,6 +10,9 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using MyBlog.WEB.Models;
+using MyBlog.BLL.Services;
+using MyBlog.BLL.Interfaces;
+using MyBlog.BLL.DTO;
 
 namespace MyBlog.WEB.Providers
 {
@@ -29,22 +32,20 @@ namespace MyBlog.WEB.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
+            IUserService userService = context.OwinContext.Get<UserService>();
 
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
-
-            if (user == null)
+            ClaimsIdentity oAuthIdentity;
+            try
             {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
+                oAuthIdentity = await userService.GenerateUserIdentityAsync(context.OwinContext, context.UserName, context.Password);
+            }
+            catch (Exception ex)
+            {
+                context.SetError("invalid_grant", ex.Message);
                 return;
             }
 
-            ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
-               OAuthDefaults.AuthenticationType);
-            //ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
-            //    CookieAuthenticationDefaults.AuthenticationType);
-
-            AuthenticationProperties properties = CreateProperties(user.UserName);
+            AuthenticationProperties properties = CreateProperties(oAuthIdentity.Name);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             //context.Request.Context.Authentication.SignIn(cookiesIdentity);

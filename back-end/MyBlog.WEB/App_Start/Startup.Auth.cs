@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
+using MyBlog.BLL.Services;
 using MyBlog.WEB.Providers;
-using MyBlog.WEB.Models;
 
 namespace MyBlog.WEB
 {
@@ -22,8 +16,10 @@ namespace MyBlog.WEB
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context and user manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
-            app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+            app.ConfigureApplicationDbContext();
+            app.ConfigureApplicationUserManager();
+            app.CreatePerOwinContext<UserService>(UserService.Create);
+
 
             // Configure the application for OAuth based flow
             PublicClientId = "self";

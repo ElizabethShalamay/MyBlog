@@ -11,6 +11,8 @@ using System.Web.Http;
 
 namespace MyBlog.WEB.Controllers
 {
+    // add route prefix
+    // use ihttpactionresult
     [Authorize]
     public class CommentsController : ApiController
     {
@@ -25,22 +27,16 @@ namespace MyBlog.WEB.Controllers
         public IEnumerable<CommentViewModel> GetComments([FromUri] int page = 1)
         {
             var uri = Request.RequestUri;
-            int postId = Convert.ToInt32(uri.Segments[3]);
+            int postId = Convert.ToInt32(uri.Segments[3]); // ??
             var comments = commentService.GetComments(postId, page, 10);
-            comments = SetAuthorsNames(comments);
             return Mapper.Map<IEnumerable<CommentDTO>, IEnumerable<CommentViewModel>>(comments);
         }       
 
         [Route("api/comments/{postId}")]
-        public void PostComment([FromBody] CommentViewModel comment)
+        public void PostComment(int postId, [FromBody] CommentViewModel comment)
         {
-            var uri = Request.RequestUri;
-            int postId = Convert.ToInt32(uri.Segments[3]);
-            var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            var user = userManager.FindByNameAsync(User.Identity.Name);
-            comment.AuthorId = user.Result.Id;
             comment.PostId = postId;
-            commentService.AddComment(Mapper.Map<CommentViewModel, CommentDTO>(comment));
+            commentService.AddComment(Mapper.Map<CommentViewModel, CommentDTO>(comment), User.Identity.Name);
         }
 
         [Route("api/comments/{id}")]
@@ -54,21 +50,9 @@ namespace MyBlog.WEB.Controllers
         }
 
         [Route("api/comments")]
-        public void DeleteComment(int id)
+        public void DeleteComment(int id) // async + ihhtpactionresult for all with valiation
         {
             commentService.DeleteComment(id);
-        }
-
-
-        private IEnumerable<CommentDTO> SetAuthorsNames(IEnumerable<CommentDTO> comments)
-        {
-            var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            foreach(var comment in comments)
-            {
-                comment.AuthorName = userManager.FindByIdAsync(comment.AuthorId).Result.UserName;
-                SetAuthorsNames(comment.Children);
-            }
-            return comments;
-        }
+        }      
     }
 }

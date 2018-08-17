@@ -15,6 +15,7 @@ namespace MyBlog.WEB.Util
             Bind<IPostService>().To<PostService>();
             Bind<ICommentService>().To<CommentService>();
             Bind<ITagService>().To<TagService>();
+            Bind<IUserService>().To<UserService>();
         }
     }
 }

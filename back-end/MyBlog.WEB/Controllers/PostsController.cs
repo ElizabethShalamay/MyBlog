@@ -10,36 +10,31 @@ using System.Web;
 using System.Web.Http;
 
 namespace MyBlog.WEB.Controllers
-{
+{ 
+    // same shit
     [Authorize]
     public class PostsController : ApiController
     {
         IPostService postService;
-        ApplicationUserManager userManager;
+
         public PostsController(IPostService postService)
         {
             this.postService = postService;
-        }
-        
+        }       
 
         [Route("api/posts")]
         public IHttpActionResult GetPosts([FromUri] int page = 1)
         {
-            var user = GetUser(User.Identity.Name);
-            var postsDTO = postService.GetPosts(user.Id, page);
-            var posts = Mapper.Map<IEnumerable<PostDTO>, IEnumerable<PostViewModel>>(postsDTO);
+            IEnumerable<PostDTO> postsDTO = postService.GetPosts(User.Identity.Name, page);
+            IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostDTO>, IEnumerable<PostViewModel>>(postsDTO);
 
-            // Setting Header  
-            HttpContext.Current.Response.Headers.Add("Paging-Headers",GetPaginationData(page));
-            foreach (var post in posts)
-            {
-                post.AuthorName = SetAuthorName(post.UserId);
-            }
-            return Ok(posts);
+            string pagination_info = postService.GetPaginationData(page);
+
+            return Ok(new { posts = posts, pagination_info = pagination_info });
         }
 
         [Route("api/posts")]
-        public IEnumerable<PostViewModel> GetPosts([FromUri] string text)
+        public IEnumerable<PostViewModel> GetPosts([FromUri] string text) //  check sharp on frontend side and then call proper server method
         {
             IEnumerable<PostDTO> postsDTO = null;
             text = HttpUtility.UrlDecode(text);
@@ -48,10 +43,7 @@ namespace MyBlog.WEB.Controllers
             else postsDTO = postService.GetPostsByText(text);
 
             var posts = Mapper.Map<IEnumerable<PostDTO>, IEnumerable<PostViewModel>>(postsDTO);
-            foreach (var post in posts)
-            {
-                post.AuthorName = SetAuthorName(post.UserId);
-            }
+            
             return posts;
         }
 
@@ -60,16 +52,17 @@ namespace MyBlog.WEB.Controllers
         {
             var postDTO = postService.GetPost(id);
             var post = Mapper.Map<PostDTO, PostViewModel>(postDTO);
-            post.AuthorName = SetAuthorName(post.UserId);
             return post;
         }
 
         [Route("api/posts")]
         public void Post([FromBody] PostViewModel post)
         {
-            post.UserId = GetUser(User.Identity.Name).Id;
-            postService.AddPost(Mapper.Map<PostViewModel, PostDTO>(post), post.Tags);
+            PostDTO postDTO = Mapper.Map<PostViewModel, PostDTO>(post);
+            postDTO.AuthorName = User.Identity.Name;
+            postService.AddPost(postDTO, post.Tags);
         }
+
 
         [Route("api/posts/{id}")]
         public void Put(int id, [FromBody] PostViewModel post)
@@ -92,38 +85,8 @@ namespace MyBlog.WEB.Controllers
         {
             var postsDTO = postService.GetPosts(page, true);
             var posts = Mapper.Map<IEnumerable<PostDTO>, IEnumerable<PostViewModel>>(postsDTO);
-            foreach (var post in posts)
-            {
-                post.AuthorName = SetAuthorName(post.UserId);
-                post.Comments = postService.CountComments(post.Id);
-            }
+            
             return posts;
-        }
-
-
-        private string SetAuthorName(string id)
-        {
-            userManager = userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            return userManager.FindByIdAsync(id).Result.UserName;
-        }
-        private ApplicationUser GetUser(string name)
-        {
-            userManager = userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            var user = userManager.FindByNameAsync(User.Identity.Name);
-            return user.Result;
-        }
-        private string GetPaginationData(int page)
-        {
-            var paginationMetadata = new
-            {
-                totalCount = postService.PageInfo.TotalItems,
-                pageSize = postService.PageInfo.PageSize,
-                currentPage = page,
-                totalPages = postService.PageInfo.TotalPages,
-                previousPage = page > 1 ? "Yes" : "No",
-                nextPage = page < postService.PageInfo.TotalPages ? "Yes" : "No"
-            };
-            return JsonConvert.SerializeObject(paginationMetadata);
         }
     }
 }

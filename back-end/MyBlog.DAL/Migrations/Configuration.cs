@@ -1,14 +1,15 @@
 ﻿namespace DAL.Migrations
 {
-    using MyBlog.DAL.EF;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using MyBlog.DAL;
     using MyBlog.DAL.Entities;
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<MyBlog.DAL.EF.BlogContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<BlogContext>
     {
         public Configuration()
         {
@@ -17,13 +18,30 @@
 
         protected override void Seed(BlogContext context)
         {
-            //context.Tags.Add();
-            //context.Tags.Add(new Tag { Name = "Fashion" });
-            //context.Tags.Add(new Tag { Name = "IT" });
-            //context.Tags.Add();
-            //context.Tags.Add(new Tag { Name = "France" });
+            var roleStore = new RoleStore<IdentityRole>(context);
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
 
-            context.Posts.Add(new Post
+            List<IdentityRole> identityRoles = new List<IdentityRole>();
+            identityRoles.Add(new IdentityRole() { Name = "Admin" });
+            identityRoles.Add(new IdentityRole() { Name = "Guest" });
+            identityRoles.Add(new IdentityRole() { Name = "User" });
+
+            foreach (IdentityRole role in identityRoles)
+            {
+                roleManager.Create(role);
+            }
+
+            var userStore = new UserStore<User>(context);
+            var userManager = new UserManager<User>(userStore);
+
+            CreateUser(userManager, "user1@gmail.com", "user1", "user111", "User");
+            CreateUser(userManager, "user2@gmail.com", "user2", "user222", "User");
+            CreateUser(userManager, "user3@gmail.com", "user3", "user333", "User");
+
+            CreateUser(userManager, "admin@gmail.com", "admin", "admin123", "Admin");
+        
+
+        context.Posts.Add(new Post
             {
                 Title = "Дэвид Хэй - о возможном бое Усик - Беллью",
                 Description = "Экс-чемпион мира Дэвид Хэй поделился ожиданиями от возможного боя между Александром Усиком и Тони Беллью.",
@@ -70,6 +88,18 @@
                 Tags = new List<Tag> { new Tag { Id = 5, Name = "IT" }}
             });
             context.SaveChanges();
+        }
+
+        private void CreateUser(UserManager<User> userManager, string email, string name, string password, string role)
+        {
+            User user = new User
+            {
+                Email = email,
+                UserName = name
+            };
+
+            userManager.Create(user, password);
+            userManager.AddToRole(user.Id, role);
         }
     }
 }

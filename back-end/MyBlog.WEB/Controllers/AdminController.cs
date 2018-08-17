@@ -18,31 +18,31 @@ namespace MyBlog.WEB.Controllers
     {
         IPostService postService;
         ICommentService commentService;
-        ApplicationUserManager userManager;
+        IUserService userService;
 
-        public AdminController(IPostService postService, ICommentService commentService)
+        public AdminController(IPostService postService, ICommentService commentService, IUserService userService)
         {
             this.postService = postService;
             this.commentService = commentService;
-            var userStore = new UserStore<ApplicationUser>(new ApplicationDbContext());
-            userManager = new ApplicationUserManager(userStore);
+            this.userService = userService;
         }
 
         [Route("users")]
-        public IHttpActionResult GetUsers([FromUri] int page = 1)
+        public IHttpActionResult GetUsers([FromUri] int page)
         {
-            var users = userManager.Users.AsEnumerable().Skip((page - 1) * 5).Take(5);
+            var users = userService.GetUsers(page);
 
             if(users != null)
             {
                 return Ok(Mapper.Map<IEnumerable<UserViewModel>>(users));
             }
+
             return NotFound();
         }
         [Route("users/{id}")]
         public IHttpActionResult GetUser(string id)
         {
-            var user = userManager.FindByIdAsync(id).Result;
+            var user = userService.GetUserById(id);
 
             if (user != null)
             {

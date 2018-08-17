@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-//using System.Web.Mvc;
 using Ninject;
-using MyBlog.BLL.Interfaces;
-using MyBlog.BLL.Services;
 using Ninject.Syntax;
-using System.Diagnostics.Contracts;
 using System.Web.Http.Dependencies;
-using Ninject.Activation;
 
 namespace MyBlog.WEB.Util
 {
