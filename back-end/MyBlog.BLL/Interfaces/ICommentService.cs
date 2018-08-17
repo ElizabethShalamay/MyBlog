@@ -13,8 +13,8 @@ namespace MyBlog.BLL.Interfaces
         IEnumerable<CommentDTO> GetComments(int postId, int pageNum, int pageSize, bool approved = true);
         IEnumerable<CommentDTO> GetComments(int pageNum, int pageSize, bool approved = true);
 
-        void AddComment(CommentDTO postDTO, string userName);
-        void UpdateComment(CommentDTO comment);
-        void DeleteComment(int id);
+        bool AddComment(CommentDTO postDTO, string userName);
+        bool UpdateComment(CommentDTO comment);
+        bool DeleteComment(int id);
     }
 }

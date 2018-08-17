@@ -25,33 +25,34 @@ namespace MyBlog.BLL.Services
             return Mapper.Map<Comment, CommentDTO>(comment);
         }
 
-        void ICommentService.AddComment(CommentDTO commentDTO, string userName)
+        bool ICommentService.AddComment(CommentDTO commentDTO, string userName)
         {
             if (commentDTO == null)
-                return;
+                return false;
 
             Comment comment = Mapper.Map<CommentDTO, Comment>(commentDTO);
             comment.Date = DateTime.Now;
             comment.AuthorId = Db.AppUserManager.FindByNameAsync(userName).Result.Id;
 
-            Db.CommentManager.Create(comment);
+            int result = Db.CommentManager.Create(comment);
+            return result > 0;
         }
 
-        void ICommentService.DeleteComment(int id)
+        bool ICommentService.DeleteComment(int id)
         {
-            Db.CommentManager.Delete(id);
-            Db.SaveAsync();
+            int result = Db.CommentManager.Delete(id);
+            return result > 0;
         }
 
         IEnumerable<CommentDTO> ICommentService.GetComments(int pageNum, int pageSize, bool approved)
         {
-            var comments = Db.CommentManager.Get().Where(c => c.IsApproved == approved)
+            IEnumerable<Comment> comments = Db.CommentManager.Get().Where(c => c.IsApproved == approved)
                 .OrderByDescending(p => p.Date)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize);
 
-            var commentsDTO = Mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(comments);
-            foreach (var comment in commentsDTO)
+            IEnumerable<CommentDTO> commentsDTO = Mapper.Map<IEnumerable<CommentDTO>>(comments);
+            foreach (CommentDTO comment in commentsDTO)
             {
                 comment.Children = commentsDTO.Where(c => c.ParentId == comment.Id).AsEnumerable();
             }
@@ -61,12 +62,12 @@ namespace MyBlog.BLL.Services
 
         IEnumerable<CommentDTO> ICommentService.GetComments(int postId, int pageNum, int pageSize, bool approved)
         {
-            var comments = Db.CommentManager.Get().Where(c => c.PostId == postId && c.IsApproved == approved)
+            IEnumerable<Comment> comments = Db.CommentManager.Get().Where(c => c.PostId == postId && c.IsApproved == approved)
                 .OrderByDescending(p => p.Date)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize);
-            var commentsDTO = Mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(comments);
-            foreach (var comment in commentsDTO)
+            IEnumerable<CommentDTO> commentsDTO = Mapper.Map<IEnumerable<CommentDTO>>(comments);
+            foreach (CommentDTO comment in commentsDTO)
             {
                 comment.Children = commentsDTO.Where(c => c.ParentId == comment.Id).AsEnumerable();
             }
@@ -74,18 +75,20 @@ namespace MyBlog.BLL.Services
             return commentsDTO;
         }
 
-        void ICommentService.UpdateComment(CommentDTO commentDTO)
+        bool ICommentService.UpdateComment(CommentDTO commentDTO)
         {
             if (commentDTO != null)
-            {
-                var comment = Mapper.Map<CommentDTO, Comment>(commentDTO);
-                Db.CommentManager.Update(comment, comment.Id);
-            }
+                return false;
+
+            Comment comment = Mapper.Map<Comment>(commentDTO);
+
+            int result = Db.CommentManager.Update(comment, comment.Id);
+            return result > 0;
         }
 
         private IEnumerable<CommentDTO> SetAuthorsNames(IEnumerable<CommentDTO> comments) // use automapper!
         {
-            foreach (var comment in comments)
+            foreach (CommentDTO comment in comments)
             {
                 comment.AuthorName = Db.AppUserManager.FindByIdAsync(comment.AuthorId).Result.UserName;
                 SetAuthorsNames(comment.Children);

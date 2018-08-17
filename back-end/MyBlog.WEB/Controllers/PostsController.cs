@@ -10,8 +10,7 @@ using System.Web;
 using System.Web.Http;
 
 namespace MyBlog.WEB.Controllers
-{ 
-    // same shit
+{
     [Authorize]
     public class PostsController : ApiController
     {
@@ -20,7 +19,7 @@ namespace MyBlog.WEB.Controllers
         public PostsController(IPostService postService)
         {
             this.postService = postService;
-        }       
+        }
 
         [Route("api/posts")]
         public IHttpActionResult GetPosts([FromUri] int page = 1)
@@ -30,63 +29,98 @@ namespace MyBlog.WEB.Controllers
 
             string pagination_info = postService.GetPaginationData(page);
 
-            return Ok(new { posts = posts, pagination_info = pagination_info });
+            if (posts != null)
+                return Ok(new { posts = posts, pagination_info = pagination_info });
+            return NotFound();
         }
 
-        [Route("api/posts")]
-        public IEnumerable<PostViewModel> GetPosts([FromUri] string text) //  check sharp on frontend side and then call proper server method
+        [Route("api/search/tag")]
+        public IHttpActionResult GetPostsByTag([FromUri] string tag)
         {
-            IEnumerable<PostDTO> postsDTO = null;
-            text = HttpUtility.UrlDecode(text);
-            if (text.StartsWith("#"))
-                postsDTO = postService.GetPostsByTag(text);
-            else postsDTO = postService.GetPostsByText(text);
+            IEnumerable<PostDTO> postsDTO = postService.GetPostsByTag(HttpUtility.UrlDecode(tag));
 
-            var posts = Mapper.Map<IEnumerable<PostDTO>, IEnumerable<PostViewModel>>(postsDTO);
-            
-            return posts;
+            IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostViewModel>>(postsDTO);
+
+            if (posts != null)
+                return Ok(posts);
+            return NotFound();
+        }
+
+        [Route("api/search/text")]
+        public IHttpActionResult GetPostsByText([FromUri] string text)
+        {
+            IEnumerable<PostDTO> postsDTO = postService.GetPostsByText(HttpUtility.UrlDecode(text));
+
+            IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostViewModel>>(postsDTO);
+
+            if (posts != null)
+                return Ok(posts);
+            return NotFound();
         }
 
         [Route("api/posts/{id}")]
-        public PostViewModel GetPost(int id)
+        public IHttpActionResult GetPost(int id)
         {
-            var postDTO = postService.GetPost(id);
-            var post = Mapper.Map<PostDTO, PostViewModel>(postDTO);
-            return post;
+            PostDTO postDTO = postService.GetPost(id);
+            PostViewModel post = Mapper.Map<PostViewModel>(postDTO);
+
+            if (post != null)
+                return Ok(post);
+            return NotFound();
         }
 
         [Route("api/posts")]
-        public void Post([FromBody] PostViewModel post)
+        public IHttpActionResult Post([FromBody] PostViewModel post)
         {
-            PostDTO postDTO = Mapper.Map<PostViewModel, PostDTO>(post);
-            postDTO.AuthorName = User.Identity.Name;
-            postService.AddPost(postDTO, post.Tags);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            PostDTO postDTO = Mapper.Map<PostDTO>(post);
+
+            bool success = postService.AddPost(postDTO, User.Identity.Name, post.Tags);
+
+            if (success)
+                return Ok();
+            return BadRequest();
         }
 
 
         [Route("api/posts/{id}")]
-        public void Put(int id, [FromBody] PostViewModel post)
+        public IHttpActionResult Put(int id, [FromBody] PostViewModel post)
         {
             if (id == post.Id)
             {
-                var postDTO = Mapper.Map<PostViewModel, PostDTO>(post);
-                postService.UpdatePost(postDTO);
+                PostDTO postDTO = Mapper.Map<PostDTO>(post);
+                bool success = postService.UpdatePost(postDTO);
+
+                if (success)
+                    return Ok();
+
             }
+            return BadRequest();
         }
 
         [Route("api/posts/{id}")]
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
-            postService.DeletePost(id);
+            bool success = postService.DeletePost(id);
+
+            if (success)
+                return Ok();
+            return BadRequest();
         }
 
         [Route("api/posts/news")]
-        public IEnumerable<PostViewModel> GetNews([FromUri] int page = 1)
+        public IHttpActionResult GetNews([FromUri] int page = 1)
         {
-            var postsDTO = postService.GetPosts(page, true);
-            var posts = Mapper.Map<IEnumerable<PostDTO>, IEnumerable<PostViewModel>>(postsDTO);
-            
-            return posts;
+            IEnumerable<PostDTO> postsDTO = postService.GetPosts(page, true);
+            IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostViewModel>>(postsDTO);
+
+            if (posts != null)
+                return Ok(posts);
+            return NotFound();
         }
     }
 }

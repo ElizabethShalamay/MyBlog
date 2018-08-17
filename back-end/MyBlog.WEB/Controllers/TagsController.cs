@@ -8,6 +8,7 @@ using System.Web.Http;
 namespace MyBlog.WEB.Controllers
 {
     [Authorize]
+    [RoutePrefix("api/tags")]
     public class TagsController : ApiController
     {
         ITagService tagService;
@@ -16,25 +17,43 @@ namespace MyBlog.WEB.Controllers
             this.tagService = tagService;
         }
 
-        [Route("api/tags")]
-        public IEnumerable<TagViewModel> Get()
+        public IHttpActionResult Get()
         {
-            var tags = Mapper.Map<IEnumerable<TagDTO>, IEnumerable<TagViewModel>>(tagService.GetAll());
-            return tags;
+            IEnumerable<TagViewModel> tags = Mapper.Map<IEnumerable<TagViewModel>>(tagService.GetAll());
+            if (tags != null)
+                return Ok(tags);
+            return NotFound();
         }
 
-        [Route("api/tags")]
-        public void Post([FromBody] TagViewModel tag)
+        public IHttpActionResult Post([FromBody] TagViewModel tag)
         {
-            TagDTO tagDTO = Mapper.Map<TagViewModel, TagDTO>(tag);
-            tagService.AddTag(tagDTO);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TagDTO tagDTO = Mapper.Map<TagDTO>(tag);
+            bool success = tagService.AddTag(tagDTO);
+
+            if (success)
+                return Ok();
+            return BadRequest();
         }
 
-        [Route("api/tags/{id}")]
-        public void Put(int id, [FromBody] TagViewModel tag)
+        [Route("{id}")]
+        public IHttpActionResult Put(int id, [FromBody] TagViewModel tag)
         {
-            TagDTO tagDTO = Mapper.Map<TagViewModel, TagDTO>(tag);
-            tagService.UpdateTag(tagDTO);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TagDTO tagDTO = Mapper.Map<TagDTO>(tag);
+            bool success = tagService.UpdateTag(tagDTO);
+
+            if (success)
+                return Ok();
+            return BadRequest();
         }
     }
 }

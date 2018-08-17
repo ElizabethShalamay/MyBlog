@@ -28,24 +28,29 @@ namespace MyBlog.BLL.Services
             return Mapper.Map<IEnumerable<Tag>, IEnumerable<TagDTO>>(tags);
         }
 
-        void ITagService.AddTag(TagDTO tagDTO)
+        bool ITagService.AddTag(TagDTO tagDTO)
         {
             if (tagDTO != null)
             {
                 var tag = Mapper.Map<TagDTO, Tag>(tagDTO);
-                db.TagManager.Create(tag);
-                db.SaveAsync();
+                int result = db.TagManager.Create(tag);
+                return result > 0;
             }
+
+            return false;
         }
 
-        void ITagService.UpdateTag(TagDTO tagDTO)
+        bool ITagService.UpdateTag(TagDTO tagDTO)
         {
             if (tagDTO != null)
             {
                 var tag = Mapper.Map<TagDTO, Tag>(tagDTO);
-                db.TagManager.Update(tag, tag.Id);
-                db.SaveAsync();
+                int result = db.TagManager.Update(tag, tag.Id);
+
+                return result > 0;
             }
+
+            return false;
         }
     }
 }

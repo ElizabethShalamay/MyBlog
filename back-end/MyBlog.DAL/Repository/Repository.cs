@@ -32,13 +32,13 @@ namespace MyBlog.DAL.Repository
             return table.AsEnumerable();
         }
 
-        public void Create(T entity)
+        public int Create(T entity)
         {
             table.Add(entity);
-            blog.SaveChanges();
+            return blog.SaveChanges();
         }
 
-        public void Update(T entity, int id)
+        public int Update(T entity, int id)
         {
             T entry = Get(id);
             if(entry == null)
@@ -50,14 +50,14 @@ namespace MyBlog.DAL.Repository
                 blog.Entry(entry).CurrentValues.SetValues(entity);
             }
             blog.Entry(entry).State = EntityState.Modified;
-            blog.SaveChanges();
+            return blog.SaveChanges();
         }
 
-        public void Delete(int id)
+        public int Delete(int id)
         {
             T entity = Get(id);
             table.Remove(entity);
-            blog.SaveChanges();
+            return blog.SaveChanges();
 
         }
     }

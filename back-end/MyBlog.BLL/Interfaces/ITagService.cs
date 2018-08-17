@@ -10,7 +10,7 @@ namespace MyBlog.BLL.Interfaces
     public interface ITagService
     {
         IEnumerable<TagDTO> GetAll();
-        void AddTag(TagDTO tagDTO);
-        void UpdateTag(TagDTO tagDTO);
+        bool AddTag(TagDTO tagDTO);
+        bool UpdateTag(TagDTO tagDTO);
     }
 }

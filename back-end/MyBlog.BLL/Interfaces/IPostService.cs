@@ -1,9 +1,5 @@
 ﻿using MyBlog.BLL.DTO;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyBlog.BLL.Interfaces
 {
@@ -19,9 +15,9 @@ namespace MyBlog.BLL.Interfaces
         IEnumerable<PostDTO> GetPostsByText(string text);
         IEnumerable<PostDTO> GetPostsByTag(string tag);
 
-        void AddPost(PostDTO postDTO, IList<string> tags);
-        void DeletePost(int id);
-        void UpdatePost(PostDTO postDTO);
+        bool AddPost(PostDTO postDTO, string userName, IList<string> tags);
+        bool DeletePost(int id);
+        bool UpdatePost(PostDTO postDTO);
 
         int CountComments(int postId);
         string GetPaginationData(int page);

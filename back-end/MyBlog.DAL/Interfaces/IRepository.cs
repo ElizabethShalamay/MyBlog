@@ -12,8 +12,8 @@ namespace MyBlog.DAL.Interfaces
         T Get(int id);
         IEnumerable<T> Get(Func<T, bool> predicate);
         IEnumerable<T> Get();
-        void Create(T entity);
-        void Update(T entity, int id);
-        void Delete(int id);
+        int Create(T entity);
+        int Update(T entity, int id);
+        int Delete(int id);
     }
 }

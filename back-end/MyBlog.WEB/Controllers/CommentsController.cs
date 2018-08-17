@@ -1,19 +1,14 @@
 ﻿using AutoMapper;
-using Microsoft.AspNet.Identity.Owin;
 using MyBlog.BLL.DTO;
 using MyBlog.BLL.Interfaces;
 using MyBlog.WEB.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace MyBlog.WEB.Controllers
 {
-    // add route prefix
-    // use ihttpactionresult
     [Authorize]
+    [RoutePrefix("api/comments")]
     public class CommentsController : ApiController
     {
         ICommentService commentService;
@@ -23,36 +18,60 @@ namespace MyBlog.WEB.Controllers
             this.commentService = commentService;
         }
 
-        [Route("api/comments/{postId}")]
-        public IEnumerable<CommentViewModel> GetComments([FromUri] int page = 1)
+        [Route("{postId}")]
+        public IHttpActionResult GetComments(int postId, [FromUri] int page = 1)
         {
-            var uri = Request.RequestUri;
-            int postId = Convert.ToInt32(uri.Segments[3]); // ??
-            var comments = commentService.GetComments(postId, page, 10);
-            return Mapper.Map<IEnumerable<CommentDTO>, IEnumerable<CommentViewModel>>(comments);
+            IEnumerable<CommentDTO> comments = commentService.GetComments(postId, page, 10);
+            IEnumerable<CommentViewModel> commentModels = Mapper.Map<IEnumerable<CommentViewModel>>(comments);
+
+            if(commentModels != null)
+                return Ok(commentModels);
+            return NotFound();
         }       
 
-        [Route("api/comments/{postId}")]
-        public void PostComment(int postId, [FromBody] CommentViewModel comment)
+        [Route("{postId}")]
+        public IHttpActionResult PostComment(int postId, [FromBody] CommentViewModel comment)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             comment.PostId = postId;
-            commentService.AddComment(Mapper.Map<CommentViewModel, CommentDTO>(comment), User.Identity.Name);
+            CommentDTO commentDTO = Mapper.Map<CommentDTO>(comment);
+            bool success = commentService.AddComment(commentDTO, User.Identity.Name);
+
+            if (success)
+                return Ok();
+            return BadRequest();
         }
 
-        [Route("api/comments/{id}")]
-        public void PutComment(int id, [FromBody] CommentViewModel comment)
+        [Route("{id}")]
+        public IHttpActionResult PutComment(int id, [FromBody] CommentViewModel comment)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id == comment.Id)
             {
-                var commentDTO = Mapper.Map<CommentViewModel, CommentDTO>(comment);
-                commentService.UpdateComment(commentDTO);
+                CommentDTO commentDTO = Mapper.Map<CommentDTO>(comment);
+                bool success = commentService.UpdateComment(commentDTO);
+
+                if (success)
+                    return Ok();
             }
+
+            return BadRequest();
         }
 
-        [Route("api/comments")]
-        public void DeleteComment(int id) // async + ihhtpactionresult for all with valiation
+        public IHttpActionResult DeleteComment(int id)
         {
-            commentService.DeleteComment(id);
+            bool success = commentService.DeleteComment(id);
+            if (success)
+                return Ok();
+            return BadRequest();
         }      
     }
 }
