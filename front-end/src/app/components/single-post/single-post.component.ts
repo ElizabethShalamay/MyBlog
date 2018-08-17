@@ -15,13 +15,13 @@ export class SinglePostComponent implements OnInit {
 
   post: Post;
   postId: number;
+  isOwn: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private accService: AccountService,
-    private postsService: PostsService,
-    private commentsService: CommentsService) { }
+    private postsService: PostsService) { }
 
   getPost(): void {
     const id = +this.route.snapshot.paramMap.get('id');
@@ -30,6 +30,7 @@ export class SinglePostComponent implements OnInit {
         post => {
           this.post = post;
           this.postId = post.Id;
+          this.isOwn = this.accService.authentication.userName == this.post.AuthorName;
         });
   }
 
@@ -42,5 +43,8 @@ export class SinglePostComponent implements OnInit {
 
   ngOnInit() {
     this.getPost();
+    //console.log(this.post);
+    
+    //this.isOwn = this.accService.authentication.userName == this.post.AuthorName;
   }
 }

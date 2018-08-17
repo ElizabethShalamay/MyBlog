@@ -51,7 +51,7 @@ namespace MyBlog.BLL.Services
 
             IEnumerable<CommentDTO> commentsDTO = Mapper.Map<IEnumerable<CommentDTO>>(comments);
 
-            commentsDTO = CreateCommentTree(commentsDTO, approved);
+            //commentsDTO = CreateCommentTree(commentsDTO, approved);
            
             return commentsDTO;
         }
@@ -83,7 +83,7 @@ namespace MyBlog.BLL.Services
 
         private IEnumerable<CommentDTO> CreateCommentTree(IEnumerable<CommentDTO> commentsDTO, bool approved)
         {
-            List<CommentDTO> comments = approved? commentsDTO.ToList() : commentsDTO.Where(c => c.ParentId == 0).ToList();
+            List<CommentDTO> comments = approved? commentsDTO.Where(c => c.ParentId == 0).ToList() : commentsDTO.ToList() ;
             comments.ForEach(comment=> comment.Children = commentsDTO.Where(c => c.ParentId == comment.Id));
             return comments;
         }

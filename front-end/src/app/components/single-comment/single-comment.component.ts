@@ -13,7 +13,7 @@ export class SingleCommentComponent implements OnInit {
   @Input() comment: Comment;
   answer: boolean = false;
   edit: boolean = false;
-  isOwn: boolean;// = this.accService.authentication.userName == this.comment.AuthorName;
+  isOwn: boolean;
 
   constructor(private commentsService: CommentsService,
     private accService: AccountService) { }
@@ -27,8 +27,6 @@ export class SingleCommentComponent implements OnInit {
   updateComment() {
     if (this.isOwn) {
       this.edit = !this.edit;
-      // this.comment.IsApproved = false;
-      // this.commentsService.updateComment(this.comment).subscribe();
     }
   }
 

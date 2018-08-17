@@ -13,10 +13,7 @@ export class CreateCommentComponent implements OnInit {
 
   @Input() parentId: number = 0;
   @Input() comment:Comment = new Comment();
-
   text: string;
-
-  
 
   constructor(private commentsService: CommentsService,
     private location: Location,
@@ -44,20 +41,5 @@ export class CreateCommentComponent implements OnInit {
     if(this.comment){
       this.text = this.comment.Text;
     }
-    // const id = +this.route.snapshot.paramMap.get('id');
-    // console.log(id);
-
-    // if (id == 0) {
-    //   this.comment = new Comment();
-    // }
-    // else {
-    //   this.commentsService.getComment(id).subscribe(
-    //     c => {
-    //       this.comment = c;
-    //       console.log(c);
-    //       console.log(this.comment);
-    //     });
-
-    // }
   }
 }

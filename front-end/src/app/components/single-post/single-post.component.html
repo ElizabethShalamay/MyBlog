@@ -1,4 +1,4 @@
-<a routerLink="/creator/{{post.Id}}">
+<a *ngIf="isOwn" routerLink="/creator/{{post.Id}}">
   + Edit post</a>
 <div class="main-post container-column">
   <div class="heading">
