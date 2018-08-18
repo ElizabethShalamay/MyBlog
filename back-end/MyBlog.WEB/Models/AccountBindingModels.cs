@@ -3,8 +3,6 @@ using Newtonsoft.Json;
 
 namespace MyBlog.WEB.Models
 {
-    // Models used as parameters to AccountController actions.
-
     public class RegisterBindingModel
     {
         [Required]

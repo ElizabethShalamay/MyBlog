@@ -98,7 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\CommentDTO.cs" />
-    <Compile Include="DTO\PageInfo.cs" />
+    <Compile Include="Infrastructure\PageInfo.cs" />
     <Compile Include="DTO\PostDTO.cs" />
     <Compile Include="DTO\TagDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />

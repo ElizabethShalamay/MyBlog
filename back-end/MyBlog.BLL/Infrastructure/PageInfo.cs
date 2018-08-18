@@ -1,7 +1,10 @@
 ﻿using System;
 
-namespace MyBlog.BLL.DTO
+namespace MyBlog.BLL
 {
+    /// <summary>
+    /// Info used for pagination
+    /// </summary>
     public class PageInfo
     {
         public int PageNumber { get; set; } 

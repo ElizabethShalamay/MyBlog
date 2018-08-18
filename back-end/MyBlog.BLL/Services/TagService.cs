@@ -8,6 +8,9 @@ using MyBlog.DAL.Entities;
 
 namespace MyBlog.BLL.Services
 {
+    /// <summary>
+    /// Service for working with tags : reading, addind, editing
+    /// </summary>
     public class TagService : ITagService
     {
         IUnitOfWork db;
@@ -17,6 +20,10 @@ namespace MyBlog.BLL.Services
             db = unitOfWork;
         }
 
+        /// <summary>
+        /// Return list of most used tags
+        /// </summary>
+        /// <returns>List of tag DTOs</returns>
         IEnumerable<TagDTO> ITagService.GetAll()
         {
             var tags = db.TagManager.Get()
@@ -25,6 +32,11 @@ namespace MyBlog.BLL.Services
             return Mapper.Map<IEnumerable<Tag>, IEnumerable<TagDTO>>(tags);
         }
 
+        /// <summary>
+        /// Add a new tag
+        /// </summary>
+        /// <param name="tagDTO">Tag</param>
+        /// <returns>Boolean value of operatin success</returns>
         bool ITagService.AddTag(TagDTO tagDTO)
         {
             if (tagDTO != null)
@@ -37,6 +49,11 @@ namespace MyBlog.BLL.Services
             return false;
         }
 
+        /// <summary>
+        /// Edit an existing tag
+        /// </summary>
+        /// <param name="tagDTO">Tag</param>
+        /// <returns>Boolean value of operatin success</returns>
         bool ITagService.UpdateTag(TagDTO tagDTO)
         {
             if (tagDTO != null)

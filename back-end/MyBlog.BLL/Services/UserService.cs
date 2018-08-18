@@ -17,6 +17,9 @@ using Microsoft.Owin.Security.OAuth;
 
 namespace MyBlog.BLL.Services
 {
+    /// <summary>
+    /// Servise for work with users : reading, adding, removing
+    /// </summary>
     public class UserService : IUserService, IDisposable
     {
         IUnitOfWork db;
@@ -25,24 +28,45 @@ namespace MyBlog.BLL.Services
             db = unitOfWork;
         }
 
+        /// <summary>
+        /// Add a new user
+        /// </summary>
+        /// <param name="userDTO">User data</param>
+        /// <param name="password">User password</param>
+        /// <returns></returns>
         async Task<IdentityResult> IUserService.CreateUser(UserDTO userDTO, string password)
         {
             User user = Mapper.Map<User>(userDTO);
             return await db.AppUserManager.CreateAsync(user, password);
         }        
 
+        /// <summary>
+        /// Find an existing user by id
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>User with specified id</returns>
         UserDTO IUserService.GetUserById(string id)
         {
             User user = db.AppUserManager.FindByIdAsync(id).Result;
             return Mapper.Map<UserDTO>(user);
         }
 
+        /// <summary>
+        /// Find an existing user by name
+        /// </summary>
+        /// <param name="userName">Name</param>
+        /// <returns>User with specified name</returns>
         UserDTO IUserService.GetUserByName(string userName)
         {
             User user = db.AppUserManager.FindByNameAsync(userName).Result;
             return Mapper.Map<UserDTO>(user);
         }
 
+        /// <summary>
+        /// Get users per page
+        /// </summary>
+        /// <param name="page">Page number</param>
+        /// <returns></returns>
         IEnumerable<UserDTO> IUserService.GetUsers(int page)
         {
             IEnumerable<User> users = db.AppUserManager.Users.OrderBy(user => user.UserName)
@@ -50,17 +74,22 @@ namespace MyBlog.BLL.Services
             return Mapper.Map<IEnumerable<UserDTO>>(users);
         }
 
-        private User GetUser(string name)
-        {
-            var user = db.AppUserManager.FindByNameAsync(name);
-            return user.Result;
-        }
-
+       /// <summary>
+       /// Create new instance of User Service
+       /// </summary>
+       /// <returns></returns>
         public static UserService Create()
         {
             return new UserService(new UnitOfWork());
         }
 
+        /// <summary>
+        /// Create claims for specific user
+        /// </summary>
+        /// <param name="context"></param> // TODO: ???
+        /// <param name="login">User login</param>
+        /// <param name="password">User password</param>
+        /// <returns>Claims for user with specified login and password</returns>
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(IOwinContext context, string login, string password)
         {
             var userManager = context.GetUserManager<ApplicationUserManager>();
@@ -112,5 +141,11 @@ namespace MyBlog.BLL.Services
         }
 
         #endregion
+
+        private User GetUser(string name)
+        {
+            var user = db.AppUserManager.FindByNameAsync(name);
+            return user.Result;
+        }
     }
 }

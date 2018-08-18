@@ -6,6 +6,9 @@ using AutoMapper.Configuration;
 
 namespace MyBlog.BLL.Infrastructure
 {
+    /// <summary>
+    /// Mapping configuration between DAL and BLL
+    /// </summary>
     public class MappingConfig
     {       
         public static void InitializeMapper(MapperConfigurationExpression config)
