@@ -19,8 +19,6 @@ export class SearchComponent implements OnInit, AfterViewChecked {
   }
   ngAfterViewChecked() {
     if (this.posts != this.postsService.posts)
-      this.posts = this.postsService.posts;
-      console.log(this.postsService.posts);     
-
+      this.posts = this.postsService.posts;     
   }
 }

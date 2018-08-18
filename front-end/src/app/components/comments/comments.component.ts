@@ -24,7 +24,6 @@ export class CommentsComponent implements OnInit {
         this.commentsService.getComments(id, this.page).subscribe(
         data => {
           this.comments.push(...data);
-          console.log(data);
           this.page++;
         }
       );

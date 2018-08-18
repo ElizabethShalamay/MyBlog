@@ -34,7 +34,6 @@ export class NewsComponent implements OnInit {
   }
   onTagClick(tag: string) {
     let tagString = `#${tag}`;
-    console.log(tagString);
 
     this.postsService.search(tagString).subscribe(data =>
       this.postsService.posts.push(...data)

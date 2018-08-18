@@ -1,18 +1,18 @@
 <div class="creator-form">
   <div class="creator heading">
     <h3>Heading</h3>
-    <textarea class="form-control" rows="1" cols="200" 
-    (input)="onHeadingInput($event.target.value)">{{post.Title}}</textarea>
+    <textarea name="title" class="form-control" rows="1" cols="200" 
+    [(ngModel)]="post.Title" required #title="ngModel">{{post.Title}}</textarea>
   </div>
   <div class="creator description">
       <h3>Description</h3>
-    <textarea class="form-control" rows="5" cols="200" 
-    (input)="onDescriptionInput($event.target.value)">{{post.Description}}</textarea>
+    <textarea name="description" class="form-control" rows="5" cols="200" 
+    [(ngModel)]="post.Description" required #description="ngModel">{{post.Description}}</textarea>
   </div>
   <div class="creator text">    
     <h3>Text</h3>
-    <textarea class="form-control" rows="10" cols="200" 
-    (input)="onTextInput($event.target.value)">{{post.Text}}</textarea>
+    <textarea name="text" class="form-control" rows="10" cols="200" 
+    [(ngModel)]="post.Text"required #text="ngModel">{{post.Text}}</textarea>
   </div>
   <div class="tags">
       <fieldset class="form-group">
@@ -34,7 +34,7 @@
   </div>
   <div class="button-group">
     <button type="button" class="button-submit" 
-    (click)="addPost()">Create</button>
+    (click)="addPost()" [disabled]="title.invalid || description.invalid || text.invalid">Create</button>
   </div>
 </div>
 <!-- (input)="onTagFieldInput($event.target.value)" -->

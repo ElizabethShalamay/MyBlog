@@ -1,13 +1,16 @@
 <form class="form-group form-control">
-  <input type="text" class="form-control" placeholder="Login" 
-    (input)="onLoginInput($event.target.value)" />
+  <input name="loginInput" type="text" class="form-control" placeholder="Login" 
+  [(ngModel)]="email" required #loginInput="ngModel"/>
 
-  <input type="password" class="form-control" placeholder="Password" 
-    (input)="onPasswordInput($event.target.value)" />
-  <input type="password" class="form-control" placeholder="Confirm Password" 
-    (input)="onConfirmPasswordInput($event.target.value)"/>
+  <input name="passwordInput" type="password" class="form-control" placeholder="Password" 
+  [(ngModel)]="password" required #passwordInput="ngModel"/>
+
+  <input name="cofirmInput" type="password" class="form-control" placeholder="Confirm Password" 
+  [(ngModel)]="confirmPassword" required #confirmInput="ngModel"/>
 
   <div class="button-group">
-    <button type="button" class="button-submit" (click)="onRegisterClick()">Register</button>
+    <button type="button" class="button-submit" 
+    [disabled]="loginInput.invalid || passwordInput.invalid || cofirmInput.invalid" 
+    (click)="onRegisterClick()">Register</button>
   </div>
 </form>

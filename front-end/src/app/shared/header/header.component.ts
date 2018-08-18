@@ -18,7 +18,6 @@ export class HeaderComponent implements OnInit {
     accService.getLoggedIn.subscribe(auth => this.setAuth(auth));
   }
 
-
   onSearchClick() {
     this.postService.search(this.search).subscribe(data => {
       this.postService.posts.push(...data);

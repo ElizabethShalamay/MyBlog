@@ -1,7 +1,7 @@
 <div class="comment-creator">
   <div>
     <textarea cols="50" rows="8" style="max-width: 100%" (input)="onCommentInput($event.target.value)"
-    [(ngModel)]="comment.Text"></textarea>
+    [(ngModel)]="comment.Text" name="comment" #comment="ngModel" required></textarea>
   </div>
-  <button type="button" class="button-submit" (click)="addComment()">Add</button>
+  <button type="button" class="button-submit" [disabled]="comment.invalid" (click)="addComment()">Add</button>
 </div>

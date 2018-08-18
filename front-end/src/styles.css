@@ -74,3 +74,7 @@
         background-color: #4f4a47;
         border-radius: 10px;
     }
+
+input.ng-touched.ng-invalid {border:solid red 2px;}
+textarea.ng-touched.ng-invalid {border:solid red 2px;}
+/* textarea.ng-touched.ng-valid {border:solid green 2px;} */

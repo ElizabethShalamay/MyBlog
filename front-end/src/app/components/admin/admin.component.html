@@ -1,17 +1,16 @@
 <ul class="nav nav-tabs">
-  <li class="nav-link" data-toggle="tab">
-    <a>Users</a>
+  <li class="nav-link"  data-toggle="tab">
+    <a (click)="chooseTab('users')">Users</a>
   </li>
-  <li class="nav-link" data-toggle="tab">
-    <a>Posts</a>
+  <li class="nav-link"  data-toggle="tab">
+    <a (click)="chooseTab('posts')">Posts</a>
   </li>
-  <li class="nav-link" data-toggle="tab">
-    <a>Comments</a>
+  <li class="nav-link"  data-toggle="tab">
+    <a (click)="chooseTab('comments')">Comments</a>
   </li>
 </ul>
-<div id="table"></div>
 
-<table id="user-table" class="table">
+<table *ngIf="usersTab" class="table">
   <thead class="thead-dark">
     <tr>
       <th scope="col">User Name</th>
@@ -28,9 +27,7 @@
   </tbody>
 </table>
 
-<br/>
-
-<table id="post-table" class="table">
+<table *ngIf="postsTab" class="table">
   <thead class="thead-dark">
       <tr>
           <th scope="col">Title</th>
@@ -54,9 +51,7 @@
   </tbody>
 </table>
 
-<br/>
-
-<table id="comment-table" class="table">
+<table *ngIf="commentsTab" class="table">
   <thead class="thead-dark">
       <tr>
           <th scope="col">Author Name</th>

@@ -11,23 +11,27 @@ export class HomeComponent implements OnInit {
 
   title = 'MyBlog';
   search: string;
+  isAuthenticated: boolean;
 
   constructor(private accService: AccountService,
     private postService: PostsService,
     private router: Router) {
+      accService.getLoggedIn.subscribe(auth => this.setAuth(auth));
   }
 
-  onSearchInput(search: string) {
-    this.search = search;
-  }
   onSearchClick() {
     this.postService.search(this.search).subscribe(
       data => this.postService.posts = data
     );
     this.router.navigate['/search'];
   }
+
   onLogOffClick() {
     this.accService.logOut();
+  }
+
+  private setAuth(auth: boolean): void {
+    this.isAuthenticated = auth;
   }
 
   ngOnInit() {

@@ -1,7 +1,7 @@
-<div *appShowAuthed="false">
+<div *ngIf="!isAuthenticated">
   <app-login></app-login>
 </div>
-<div *appShowAuthed="true">
+<div *ngIf="!isAuthenticated">
     <app-posts></app-posts>
     <app-news></app-news>
   </div>

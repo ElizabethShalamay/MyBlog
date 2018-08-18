@@ -12,20 +12,10 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 })
 export class CreatePostComponent implements OnInit {
 
-  post: Post;
+  post: Post = new Post;
   tagField: string;
   constructor(private route: ActivatedRoute,
     private postService: PostsService) { }
-
-  onHeadingInput(title: string) {
-    this.post.Title = title;
-  }
-  onDescriptionInput(description: string) {
-    this.post.Description = description;
-  }
-  onTextInput(text: string) {
-    this.post.Text = text;
-  }
 
   onTagFieldInput(tag: string) {
     this.tagField = tag;
@@ -42,7 +32,6 @@ export class CreatePostComponent implements OnInit {
     this.post.Tags = this.post.Tags.filter(tag => tag !== tagName);
   }
   addPost() {
-    console.log(this.post.Id);
     if (this.post.Id) {
       this.post.IsApproved = false;
       this.postService.updatePost(this.post).subscribe();
@@ -53,7 +42,6 @@ export class CreatePostComponent implements OnInit {
   }
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
-    console.log(id);
 
     if (id == 0) {
       this.post = new Post();
@@ -63,8 +51,6 @@ export class CreatePostComponent implements OnInit {
       this.postService.getPost(id).subscribe(
         p => {
           this.post = p;
-          console.log(p);
-          console.log(this.post);
         });
 
     }

@@ -35,12 +35,10 @@ S
     this.accService.signIn(loginModel)
       .subscribe(data => {
         this.tokenParam = data;
-        // this.accService.AccessToken = data.access_token;
         localStorage.setItem("Authorization", data.access_token);
 
         this.accService.authentication.userName = this.login;
         this.accService.authentication.isAuth = true;
-        console.log(this.accService.authentication.isAuth);
 
         this.accService.getLoggedIn.emit(true);
         if (this.accService.authentication.userName == 'admin') {

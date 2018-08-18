@@ -25,7 +25,6 @@ export class CreateCommentComponent implements OnInit {
   }
 
   addComment() {
-    console.log(this.comment.Id);
     if (this.comment.Id) {
       this.comment.IsApproved = false;
       this.commentsService.updateComment(this.comment).subscribe();

@@ -13,7 +13,7 @@ import { CommentsService } from '../../services/comments/comments.service';
 })
 export class SinglePostComponent implements OnInit {
 
-  post: Post;
+  post: Post = new Post();
   postId: number;
   isOwn: boolean;
 
@@ -43,8 +43,5 @@ export class SinglePostComponent implements OnInit {
 
   ngOnInit() {
     this.getPost();
-    //console.log(this.post);
-    
-    //this.isOwn = this.accService.authentication.userName == this.post.AuthorName;
   }
 }

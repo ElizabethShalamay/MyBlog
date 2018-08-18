@@ -20,7 +20,7 @@ export class PostsComponent implements OnInit {
   posts: Post[] = [];
   post: Post;
   page = 1;
-  paginationInfo: PaginationInfo;
+  paginationInfo: PaginationInfo = new PaginationInfo();
   headers: HttpHeaders;
 
   getPosts() {
@@ -28,10 +28,8 @@ export class PostsComponent implements OnInit {
     this.postsService.getPosts(this.page).subscribe(
       (data) => {
         this.posts.push(...data.body["posts"]);
-        console.log(data);
         
         this.paginationInfo = JSON.parse(data.body["pagination_info"]);
-        console.log(this.paginationInfo);
       }
     );
   }
@@ -59,7 +57,6 @@ export class PostsComponent implements OnInit {
     this.postsService.getPostsByAuthor(this.page, authorId).subscribe(
       data => {
         this.posts.push(...data.posts);
-        console.log(data);
         
         this.page++;
       }

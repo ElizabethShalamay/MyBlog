@@ -17,9 +17,21 @@ export class AdminComponent implements OnInit {
   posts: Post[] = [];
   comments: Comment[] = [];
 
+  usersTab: boolean = false;
+  postsTab: boolean = false;
+  commentsTab: boolean = false;
+
   constructor(private userService: UsersService,
     private postService: PostsService,
     private commentService: CommentsService) { }
+
+
+  chooseTab(tab: string) {
+    this.usersTab = tab === 'users';
+    this.postsTab = tab === 'posts';
+    this.commentsTab = tab === 'comments';
+  }
+
 
   getUsers(page: number) {
     this.userService.getUsers(page, 'api/admin/users').subscribe(data => this.users.push(...data));
@@ -28,29 +40,29 @@ export class AdminComponent implements OnInit {
   getPosts(page: number) {
     this.postService.getPosts(page, 'api/admin/posts').subscribe(data => this.posts.push(...data.body));
   }
-  
+
   getComments(page: number) {
     this.commentService.getAllComments(page, 'api/admin/comments').subscribe(data => this.comments.push(...data));
   }
 
-  approvePost(id: number){
+  approvePost(id: number) {
     let post = this.posts.find(p => p.Id == id);
     post.IsApproved = true;
     this.postService.updatePost(post).subscribe();
   }
 
-  deletePost(id:number){
+  deletePost(id: number) {
     let post = this.posts.find(p => p.Id == id);
     this.postService.removePost(post).subscribe();
   }
 
-  approveComment(id: number){
+  approveComment(id: number) {
     let comment = this.comments.find(c => c.Id == id);
     comment.IsApproved = true;
     this.commentService.updateComment(comment).subscribe();
   }
 
-  deleteComment(id:number){
+  deleteComment(id: number) {
     let comment = this.comments.find(c => c.Id == id);
     this.commentService.removeComment(comment).subscribe();
   }

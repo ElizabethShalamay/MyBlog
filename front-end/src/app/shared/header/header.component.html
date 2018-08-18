@@ -15,8 +15,8 @@
         </div>
         <div class="navbar-brand">
             <div class="form-inline">
-                <input class="form-control mr-sm-3" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="search">
-                <button class="btn my-2 my-sm-0" (click)="onSearchClick()">Search</button>
+                <input class="form-control mr-sm-3" name="search" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="search" #searchText="ngModel" required>
+                <button class="btn my-2 my-sm-0" (click)="onSearchClick()" [disabled]="searchText.invalid">Search</button>
                 <a class="navbar-brand" (click)="onLogOffClick()">Log off</a>
             </div>
         </div>
