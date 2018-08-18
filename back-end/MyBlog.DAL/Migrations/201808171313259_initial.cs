@@ -105,8 +105,8 @@ namespace DAL.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                     })
-                .PrimaryKey(t => t.Id);
-            
+                .PrimaryKey(t => new { t.Id, t.Name }); //  .PrimaryKey(t => t.Id);
+
             CreateTable(
                 "dbo.AspNetRoles",
                 c => new

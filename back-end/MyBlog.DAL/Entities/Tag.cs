@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using DAL.Entities;
+using System.Collections.Generic;
 
 namespace MyBlog.DAL.Entities
 {
-    public class Tag
+    public class Tag : IIdentical
     {
         public int Id { get; set; }
         public string Name { get; set; }

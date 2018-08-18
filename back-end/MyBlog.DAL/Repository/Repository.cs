@@ -1,4 +1,5 @@
-﻿using MyBlog.DAL.Interfaces;
+﻿using DAL.Entities;
+using MyBlog.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace MyBlog.DAL.Repository
 {
-    class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class, IIdentical
     {
         readonly BlogContext blog;
         DbSet<T> table;
@@ -38,10 +39,25 @@ namespace MyBlog.DAL.Repository
             return blog.SaveChanges();
         }
 
-        public int Update(T entity, int id)
+        //public int Update(T entity, int id)
+        //{
+        //    T entry = Get(id);
+        //    if(entry == null)
+        //    {
+        //        table.Add(entity);
+        //    }
+        //    else
+        //    {
+        //        blog.Entry(entry).CurrentValues.SetValues(entity);
+        //    }
+        //    blog.Entry(entry).State = EntityState.Modified;
+        //    return blog.SaveChanges();
+        //}
+
+        public int Update(T entity)
         {
-            T entry = Get(id);
-            if(entry == null)
+            T entry = Get((entity as IIdentical).Id);
+            if (entry == null)
             {
                 table.Add(entity);
             }

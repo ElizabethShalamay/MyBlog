@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DAL.Entities;
+using System;
 
 namespace MyBlog.DAL.Entities
 {
-    public class Comment
+    public class Comment : IIdentical
     {
         public int Id { get; set; }
 

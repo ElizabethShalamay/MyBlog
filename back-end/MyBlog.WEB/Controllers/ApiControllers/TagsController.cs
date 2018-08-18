@@ -19,7 +19,7 @@ namespace MyBlog.WEB.Controllers
 
         public IHttpActionResult Get()
         {
-            IEnumerable<TagViewModel> tags = Mapper.Map<IEnumerable<TagViewModel>>(tagService.GetAll());
+            IEnumerable<TagViewModel> tags = Mapper.Map<IEnumerable<TagViewModel>>(tagService.GetTop());
             if (tags != null)
                 return Ok(tags);
             return NotFound();

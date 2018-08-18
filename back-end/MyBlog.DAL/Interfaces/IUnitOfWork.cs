@@ -9,9 +9,6 @@ namespace MyBlog.DAL.Interfaces
         BlogContext Blog { get; }
         IRepository<Post> PostManager { get; }
         IRepository<Comment> CommentManager { get; }
-        IRepository<Tag> TagManager { get; }
-
-        UserManager<User> AppUserManager { get; }
-        RoleManager<Role> AppRoleManager { get; }      
+        IRepository<Tag> TagManager { get; }     
     }
 }

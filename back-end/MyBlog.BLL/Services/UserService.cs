@@ -22,8 +22,8 @@ namespace MyBlog.BLL.Services
     /// </summary>
     public class UserService : IUserService, IDisposable
     {
-        IUnitOfWork db;
-        public UserService(IUnitOfWork unitOfWork)
+        IIdentityManager db;
+        public UserService(IIdentityManager unitOfWork)
         {
             db = unitOfWork;
         }

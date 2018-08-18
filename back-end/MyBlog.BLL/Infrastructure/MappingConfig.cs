@@ -24,7 +24,6 @@ namespace MyBlog.BLL.Infrastructure
             config.CreateMap<TagDTO, Tag>();
 
             Mapper.Initialize(config);
-
         }
     }
 }

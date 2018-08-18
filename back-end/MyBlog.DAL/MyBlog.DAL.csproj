@@ -77,10 +77,12 @@
   <ItemGroup>
     <Compile Include="EF\BlogContext.cs" />
     <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\IIdentical.cs" />
     <Compile Include="Entities\Post.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Tag.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Interfaces\IIdentityManager.cs" />
     <Compile Include="Managers\ApplicationUserManager.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Migrations\201808171313259_initial.cs" />

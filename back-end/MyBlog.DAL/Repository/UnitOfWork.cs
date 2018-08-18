@@ -6,7 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace MyBlog.DAL.Repository
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork : IUnitOfWork, IIdentityManager, IDisposable
     {
         BlogContext blog;
         IRepository<Post> postManager;
@@ -33,8 +33,8 @@ namespace MyBlog.DAL.Repository
         IRepository<Comment> IUnitOfWork.CommentManager => commentManager;
         IRepository<Tag> IUnitOfWork.TagManager => tagManager;
 
-        UserManager<User> IUnitOfWork.AppUserManager => userManager;
-        RoleManager<Role> IUnitOfWork.AppRoleManager => roleManager;
+        UserManager<User> IIdentityManager.AppUserManager => userManager;
+        RoleManager<Role> IIdentityManager.AppRoleManager => roleManager;
 
         BlogContext IUnitOfWork.Blog => blog;
 

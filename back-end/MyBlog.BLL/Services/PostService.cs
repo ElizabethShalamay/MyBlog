@@ -205,7 +205,7 @@ namespace MyBlog.BLL.Services
 
             post.Tags = tags.Where(tag => tag.Posts.Contains(post)).ToList();
             post.Tags.ToList().RemoveAll(tag => !postDTO.Tags.Contains(tag.Name));
-            int result = Db.PostManager.Update(post, post.Id);
+            int result = Db.PostManager.Update(post);
 
             foreach (string tag in postDTO.Tags)
             {
@@ -252,12 +252,12 @@ namespace MyBlog.BLL.Services
 
         private string SetAuthorName(string id)
         {         
-            return Db.AppUserManager.FindByIdAsync(id).Result.UserName;
+            return (Db as IIdentityManager).AppUserManager.FindByIdAsync(id).Result.UserName;
         }
 
         private User GetUser(string name)
         {
-            Task<User> user = Db.AppUserManager.FindByNameAsync(name);
+            Task<User> user = (Db as IIdentityManager).AppUserManager.FindByNameAsync(name);
             return user.Result;
         }
     }
