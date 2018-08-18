@@ -87,7 +87,8 @@ namespace MyBlog.BLL.Services
 
             Comment comment = Mapper.Map<CommentDTO, Comment>(commentDTO);
             comment.Date = DateTime.Now;
-            comment.AuthorId = (Db as IIdentityManager).AppUserManager.FindByNameAsync(userName).Result.Id;
+            if(comment.AuthorId == "" || comment.AuthorId == null)
+                comment.AuthorId = (Db as IIdentityManager).AppUserManager.FindByNameAsync(userName).Result.Id;
 
             int result = Db.CommentManager.Create(comment);
             return result > 0;

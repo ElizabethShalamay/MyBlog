@@ -53,17 +53,20 @@ namespace MyBlog.Test.Services
         }
 
         [TestMethod]
-        public void AddTag_AddNewTag_TagsShoudBeEqual()
+        public void AddTag_AddNewTag_TagShoudBeAdded()
         {
             // Arrange
+            int countBefore = service.GetAll().Count();
             TagDTO tag = new TagDTO { Id = 5, Name = "Tag 5" };
             int id = tag.Id;
 
             // Act
             bool result = service.AddTag(tag);
+            int countAfter = service.GetAll().Count();
 
             // Assert
             Assert.IsTrue(result);
+            Assert.AreEqual(countBefore + 1, countAfter);
             Assert.AreEqual(tag.Id, unitOfWork.TagManager.Get(id).Id);
             Assert.AreEqual(tag.Name, unitOfWork.TagManager.Get(tag.Id).Name);
         }
@@ -104,12 +107,16 @@ namespace MyBlog.Test.Services
         {
             // Arrange            
             TagDTO newTag = null;
+            int countBefore = service.GetAll().Count();
 
             // Act
             bool result = service.AddTag(newTag);
+            int countAfter = service.GetAll().Count();
 
             // Assert
             Assert.IsFalse(result);
+            Assert.AreEqual(countBefore, countAfter);
+
         }
 
         [TestMethod]
