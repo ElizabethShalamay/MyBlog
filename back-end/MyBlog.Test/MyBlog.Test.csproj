@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiControllers\CommentsControllerTest.cs" />
+    <Compile Include="ApiControllers\PostsControllerTests.cs" />
     <Compile Include="ApiControllers\TagsControllerTest.cs" />
     <Compile Include="Context\CommentRepository.cs" />
     <Compile Include="Context\PostRepository.cs" />

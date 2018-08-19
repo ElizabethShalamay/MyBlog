@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNet.Identity.Owin;
 using MyBlog.BLL.DTO;
 using MyBlog.BLL.Interfaces;
 using MyBlog.WEB.Models;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
@@ -29,9 +26,7 @@ namespace MyBlog.WEB.Controllers
 
             string pagination_info = postService.GetPaginationData(page);
 
-            if (posts != null)
-                return Ok(new { posts = posts, pagination_info = pagination_info });
-            return NotFound();
+            return Ok(new { posts = posts, pagination_info = pagination_info });
         }
 
         [Route("api/search/tag")]
@@ -41,9 +36,7 @@ namespace MyBlog.WEB.Controllers
 
             IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostViewModel>>(postsDTO);
 
-            if (posts != null)
-                return Ok(posts);
-            return NotFound();
+            return Ok(posts);
         }
 
         [Route("api/search/text")]
@@ -53,9 +46,7 @@ namespace MyBlog.WEB.Controllers
 
             IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostViewModel>>(postsDTO);
 
-            if (posts != null)
-                return Ok(posts);
-            return NotFound();
+            return Ok(posts);
         }
 
         [Route("api/posts/{id}")]
@@ -64,18 +55,14 @@ namespace MyBlog.WEB.Controllers
             PostDTO postDTO = postService.GetPost(id);
             PostViewModel post = Mapper.Map<PostViewModel>(postDTO);
 
-            if (post != null)
-                return Ok(post);
-            return NotFound();
+            return Ok(post);
         }
 
         [Route("api/posts")]
         public IHttpActionResult Post([FromBody] PostViewModel post)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (post == null)
+                return BadRequest();
 
             PostDTO postDTO = Mapper.Map<PostDTO>(post);
 
@@ -90,15 +77,15 @@ namespace MyBlog.WEB.Controllers
         [Route("api/posts/{id}")]
         public IHttpActionResult Put(int id, [FromBody] PostViewModel post)
         {
-            if (id == post.Id)
-            {
-                PostDTO postDTO = Mapper.Map<PostDTO>(post);
-                bool success = postService.UpdatePost(postDTO);
+            if (post == null || id != post.Id)
+                return BadRequest();
 
-                if (success)
-                    return Ok();
+            PostDTO postDTO = Mapper.Map<PostDTO>(post);
+            bool success = postService.UpdatePost(postDTO);
 
-            }
+            if (success)
+                return Ok();
+
             return BadRequest();
         }
 
@@ -118,9 +105,7 @@ namespace MyBlog.WEB.Controllers
             IEnumerable<PostDTO> postsDTO = postService.GetPosts(page, true);
             IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostViewModel>>(postsDTO);
 
-            if (posts != null)
-                return Ok(posts);
-            return NotFound();
+            return Ok(posts);
         }
     }
 }
