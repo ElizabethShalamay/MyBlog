@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyBlog.BLL.DTO;
-using MyBlog.BLL.Infrastructure;
 using MyBlog.BLL.Interfaces;
 using MyBlog.BLL.Services;
 using MyBlog.Test.Context;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyBlog.Test.Services
 {

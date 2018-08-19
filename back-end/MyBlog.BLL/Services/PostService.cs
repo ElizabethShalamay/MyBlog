@@ -35,7 +35,7 @@ namespace MyBlog.BLL.Services
         /// <param name="page">Page number</param>
         /// <param name="approved">If post should be approved to be chosen</param>
         /// <returns>List of posts for current page</returns>
-       IEnumerable<PostDTO> IPostService.GetPosts(int page, bool approved)
+        IEnumerable<PostDTO> IPostService.GetPosts(int page, bool approved)
         {
             List<Post> posts = Db.PostManager.Get(p => p.IsApproved == approved)
                                   .OrderByDescending(p => p.PostedAt)
@@ -58,7 +58,7 @@ namespace MyBlog.BLL.Services
         /// <returns>List of posts of specific author for current page</returns>
         IEnumerable<PostDTO> IPostService.GetPosts(string authorName, int pageNum)
         {
-            IEnumerable < Post> posts = Db.PostManager.Get().ToList().Where(p => p.Author.UserName == authorName && p.IsApproved)
+            IEnumerable<Post> posts = Db.PostManager.Get().ToList().Where(p => p.Author.UserName == authorName && p.IsApproved)
                                   .OrderByDescending(p => p.PostedAt)
                                   .Skip((pageNum - 1) * PageInfo.PageSize)
                                   .Take(PageInfo.PageSize).ToList();
@@ -95,7 +95,7 @@ namespace MyBlog.BLL.Services
         {
             Post post = Db.PostManager.Get(id);
             if (post == null)
-                throw new ValidationException("Пост не найден");
+                return null;
             PostDTO postDTO = Mapper.Map<Post, PostDTO>(post);
             postDTO.AuthorName = SetAuthorName(post.UserId);
             return postDTO;
@@ -106,7 +106,7 @@ namespace MyBlog.BLL.Services
         /// </summary>
         /// <param name="tag">Tag</param>
         /// <returns>List of posts with specific tag</returns>
-         IEnumerable<PostDTO> IPostService.GetPostsByTag(string tag)
+        IEnumerable<PostDTO> IPostService.GetPostsByTag(string tag)
         {
             List<Tag> tagPosts = Db.TagManager.Get(t => t.Name == tag).ToList();
 
@@ -128,6 +128,8 @@ namespace MyBlog.BLL.Services
         /// <returns>List of posts containing specific text</returns>
         IEnumerable<PostDTO> IPostService.GetPostsByText(string text)
         {
+            if (text == null)
+                return new List<PostDTO>();
             IEnumerable<Post> posts = Db.PostManager.Get(p => Contains(p, text)).ToList();
             IEnumerable<PostDTO> postDTOs = Mapper.Map<IEnumerable<PostDTO>>(posts);
 
@@ -162,9 +164,9 @@ namespace MyBlog.BLL.Services
                 return false;
 
             Post post = Mapper.Map<Post>(postDTO);
-            post.UserId = GetUser(userName).Id;
+            post.UserId = GetUser(userName);
             post.PostedAt = DateTime.Now;
-            post.Text = FormatText(post.Text);
+            // post.Text = FormatText(post.Text); // TODO: Add formating on front-end
 
             List<Tag> tagList = new List<Tag>();//.SelectMany(item => tags);
             foreach (string tag in tags) // select many
@@ -188,7 +190,7 @@ namespace MyBlog.BLL.Services
             int result = Db.PostManager.Delete(id);
             return result > 0;
         }
-       
+
         /// <summary>
         /// Edit an existing post
         /// </summary>
@@ -200,11 +202,14 @@ namespace MyBlog.BLL.Services
                 return false;
 
             Post post = Db.PostManager.Get(postDTO.Id);
+            Post oldPost = Db.PostManager.Get(postDTO.Id);
+            if (post == null)
+                return false;
+
             List<Tag> tags = Db.TagManager.Get().ToList();
             post = Mapper.Map<PostDTO, Post>(postDTO);
 
-            post.Tags = tags.Where(tag => tag.Posts.Contains(post)).ToList();
-            post.Tags.ToList().RemoveAll(tag => !postDTO.Tags.Contains(tag.Name));
+            post.Tags = tags.Where(tag => tag.Posts.Contains(oldPost) && postDTO.Tags.Contains(tag.Name)).ToList();
             int result = Db.PostManager.Update(post);
 
             foreach (string tag in postDTO.Tags)
@@ -244,21 +249,26 @@ namespace MyBlog.BLL.Services
         {
             return post.Title.Contains(text) || post.Description.Contains(text) || post.Text.Contains(text);
         }
-       
-        private string FormatText(string postText) // check format in frontend
-        {
-            return "<p>" + postText.Replace("\n", "</p><p>").Replace("<p></p>", "") + "</p>";
-        }
+
+        //private string FormatText(string postText) // check format in frontend
+        //{
+        //    return "<p>" + postText.Replace("\n", "</p><p>").Replace("<p></p>", "") + "</p>";
+        //}
 
         private string SetAuthorName(string id)
-        {         
+        {
+            if (Db as IIdentityManager == null)
+                return null;
             return (Db as IIdentityManager).AppUserManager.FindByIdAsync(id).Result.UserName;
         }
 
-        private User GetUser(string name)
+        private string GetUser(string name)
         {
+            if (Db as IIdentityManager == null)
+                return null;
+
             Task<User> user = (Db as IIdentityManager).AppUserManager.FindByNameAsync(name);
-            return user.Result;
+            return user.Result.Id;
         }
     }
 }

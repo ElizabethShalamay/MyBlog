@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNet.Identity;
 using MyBlog.DAL;
 using MyBlog.DAL.Entities;
 using MyBlog.DAL.Interfaces;
@@ -15,13 +16,16 @@ namespace MyBlog.Test.Context
             var tag3 = new Tag { Id = 3, Name = "Tag 3" };
             var tag4 = new Tag { Id = 4, Name = "Tag 4" };
 
-            var post1 = new Post { Id = 1, UserId = "1", Title = "Title1",
+            var post1 = new Post { Id = 1, UserId = "1", Author = new User { Id = "1", UserName = "user1"},
+                Title = "Title1",
                 Description = "Description 1", Text = "Text 1", PostedAt = new DateTime(2017, 2, 3),
                 IsApproved = false, Tags = new List<Tag> { tag1, tag2 } };
-            var post2 = new Post { Id = 2, UserId = "2", Title = "Title2",
+            var post2 = new Post { Id = 2, UserId = "2", Author = new User { Id = "2", UserName = "user2" },
+                Title = "Title2",
                 Description = "Description 2", Text = "Text 2", PostedAt = new DateTime(2016, 3, 22),
-                IsApproved = true, Tags = new List<Tag> { tag1, tag3 } };
-            var post3 = new Post { Id = 3, UserId = "2", Title = "Title3",
+                IsApproved = true, Tags = new List<Tag> { tag1, tag2, tag3 } };
+            var post3 = new Post { Id = 3, UserId = "2", Author = new User { Id = "2" ,UserName = "user2" },
+                Title = "Title3",
                 Description = "Description 3", Text = "Text 3", PostedAt = new DateTime(2015, 6, 14),
                 IsApproved = true, Tags = new List<Tag> { tag2, tag4 } };
 
@@ -54,8 +58,7 @@ namespace MyBlog.Test.Context
 
         public IRepository<Tag> TagManager { get; set; }
 
-        public BlogContext Blog { get; set; }
-
+        public BlogContext Blog => throw new NotImplementedException();
 
         public void Dispose()
         {

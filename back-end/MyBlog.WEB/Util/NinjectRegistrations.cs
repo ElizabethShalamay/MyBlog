@@ -1,5 +1,6 @@
 ﻿using MyBlog.BLL.Interfaces;
 using MyBlog.BLL.Services;
+using MyBlog.WEB.Controllers;
 using Ninject.Modules;
 
 namespace MyBlog.WEB.Util
