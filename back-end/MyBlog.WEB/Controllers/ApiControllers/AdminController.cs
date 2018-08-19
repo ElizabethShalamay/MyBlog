@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using MyBlog.BLL.Interfaces;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
 using MyBlog.WEB.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
 using AutoMapper;
 
 namespace MyBlog.WEB.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     [RoutePrefix("api/admin")]
     public class AdminController : ApiController
     {
@@ -31,23 +25,14 @@ namespace MyBlog.WEB.Controllers
         public IHttpActionResult GetUsers([FromUri] int page)
         {
             var users = userService.GetUsers(page);
-
-            if(users != null)
-            {
-                return Ok(Mapper.Map<IEnumerable<UserViewModel>>(users));
-            }
-
-            return NotFound();
+            return Ok(Mapper.Map<IEnumerable<UserViewModel>>(users));
         }
         [Route("users/{id}")]
         public IHttpActionResult GetUser(string id)
         {
             var user = userService.GetUserById(id);
-
             if (user != null)
-            {
-                return Ok(user);
-            }
+                return Ok(Mapper.Map<UserViewModel>(user));
             return NotFound();
         }
 
@@ -55,21 +40,14 @@ namespace MyBlog.WEB.Controllers
         public IHttpActionResult GetPosts([FromUri] int page = 1)
         {
             var posts = postService.GetPosts(page, false);
-            if (posts != null)
-            {
-                return Ok(posts);
-            }
-            return NotFound();
+            return Ok(Mapper.Map<IEnumerable<PostViewModel>>(posts));
         }
         [Route("posts/{id}")]
         public IHttpActionResult GetPost(int id)
         {
             var post = postService.GetPost(id);
-
             if (post != null)
-            {
-                return Ok(post);
-            }
+                return Ok(Mapper.Map<PostViewModel>(post));
             return NotFound();
         }
 
@@ -77,22 +55,15 @@ namespace MyBlog.WEB.Controllers
         public IHttpActionResult GetComments([FromUri] int page = 1)
         {
             var comments = commentService.GetComments(page, 10, false);
-
-            if (comments != null)
-            {
-                return Ok(comments);
-            }
-            return NotFound();
+            return Ok(Mapper.Map<IEnumerable<CommentViewModel>>(comments));
         }
+
         [Route("comments/{id}")]
         public IHttpActionResult GetComment(int id)
         {
             var comment = commentService.GetComment(id);
-
             if (comment != null)
-            {
-                return Ok(comment);
-            }
+                return Ok(Mapper.Map<CommentViewModel>(comment));
             return NotFound();
         }
     }

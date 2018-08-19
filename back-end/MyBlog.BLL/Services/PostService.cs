@@ -17,9 +17,6 @@ namespace MyBlog.BLL.Services
     /// </summary>
     public class PostService : IPostService
     {
-        //TODO: write method GetTotalPages(); 
-        // get data from BlogSettings 
-
         IUnitOfWork Db { get; set; }
         public PageInfo PageInfo { get; set; }
 
