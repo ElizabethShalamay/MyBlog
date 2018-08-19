@@ -20,17 +20,15 @@ namespace MyBlog.WEB.Controllers
         public IHttpActionResult Get()
         {
             IEnumerable<TagViewModel> tags = Mapper.Map<IEnumerable<TagViewModel>>(tagService.GetTop());
-            if (tags != null)
-                return Ok(tags);
-            return NotFound();
+            //if (tags != null)
+            return Ok(tags);
+            //return NotFound();
         }
 
         public IHttpActionResult Post([FromBody] TagViewModel tag)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (tag == null)
+                return BadRequest();
 
             TagDTO tagDTO = Mapper.Map<TagDTO>(tag);
             bool success = tagService.AddTag(tagDTO);
@@ -43,10 +41,8 @@ namespace MyBlog.WEB.Controllers
         [Route("{id}")]
         public IHttpActionResult Put(int id, [FromBody] TagViewModel tag)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (tag == null)
+                return BadRequest();
 
             TagDTO tagDTO = Mapper.Map<TagDTO>(tag);
             bool success = tagService.UpdateTag(tagDTO);
