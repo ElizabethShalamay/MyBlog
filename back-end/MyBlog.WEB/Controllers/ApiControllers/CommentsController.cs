@@ -23,18 +23,16 @@ namespace MyBlog.WEB.Controllers
         {
             IEnumerable<CommentDTO> comments = commentService.GetComments(postId, page, 10);
             IEnumerable<CommentViewModel> commentModels = Mapper.Map<IEnumerable<CommentViewModel>>(comments);
-
-            if(commentModels != null)
-                return Ok(commentModels);
-            return NotFound();
-        }       
+            
+            return Ok(commentModels);
+        }
 
         [Route("{postId}")]
         public IHttpActionResult PostComment(int postId, [FromBody] CommentViewModel comment)
         {
-            if (!ModelState.IsValid)
+            if (comment == null)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
             }
 
             comment.PostId = postId;
@@ -49,19 +47,17 @@ namespace MyBlog.WEB.Controllers
         [Route("{id}")]
         public IHttpActionResult PutComment(int id, [FromBody] CommentViewModel comment)
         {
-            if (!ModelState.IsValid)
+            if (comment == null || id != comment.Id)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
             }
 
-            if (id == comment.Id)
-            {
-                CommentDTO commentDTO = Mapper.Map<CommentDTO>(comment);
-                bool success = commentService.UpdateComment(commentDTO);
+            CommentDTO commentDTO = Mapper.Map<CommentDTO>(comment);
+            bool success = commentService.UpdateComment(commentDTO);
 
-                if (success)
-                    return Ok();
-            }
+            if (success)
+                return Ok();
+
 
             return BadRequest();
         }
@@ -72,6 +68,6 @@ namespace MyBlog.WEB.Controllers
             if (success)
                 return Ok();
             return BadRequest();
-        }      
+        }
     }
 }
