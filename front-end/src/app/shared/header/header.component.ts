@@ -35,6 +35,12 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.accService.authentication.isAuth);
+
+    if (sessionStorage.getItem("Authorization")) {
+      this.accService.authentication.isAuth = true;
+      this.isAuthenticated = true;
+    }
   }
 
 }

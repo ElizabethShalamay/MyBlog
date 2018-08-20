@@ -7,9 +7,11 @@ a, a:not([href]):not([tabindex]){
     font-weight: 700;
     cursor: pointer;
 }
+
 a:hover,a:not([href]):not([tabindex]):hover {
     color: #e1d7c8;
 }
+
 .main-post {
     float: left;
     border-left: 6px solid #e1d7c8;
@@ -31,7 +33,7 @@ a:hover,a:not([href]):not([tabindex]):hover {
 }
 
 .date {
-        float: right;
-        font-size: 14px;
-        margin: 6px 8px 0;
-    }
+    float: right;
+    font-size: 14px;
+    margin: 6px 8px 0;
+}

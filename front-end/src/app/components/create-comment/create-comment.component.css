@@ -5,10 +5,15 @@
     border: 0;
 }
 
-    .comment-creator .button-submit {
-        margin: 0;
-    }
+.comment-creator .comment-input {
+    width: 100%;
+}
 
-        .comment-creator .button-submit:hover {
-            margin: 0;
-        }
+.comment-creator .button-submit {
+    float: right;
+    margin: 0;
+}
+
+.comment-creator .button-submit:hover {
+    margin: 0;
+}

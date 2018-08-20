@@ -1,4 +1,5 @@
 <div>
+
   <div class="comment-heading">
     <span>{{comment.AuthorName}}</span>
     <span style='padding-left:10px;'> </span>
@@ -6,6 +7,7 @@
       <span>{{comment.Date | date: 'dd/MM/yyyy hh:mm'}}</span>
     </div>
   </div>
+
   <div class="comment-body">
     <span>{{comment.Text}}</span>
   </div>
@@ -18,11 +20,14 @@
     <span>&nbsp;&nbsp;</span></a>
     <a *ngIf="isOwn"class="answer" (click)="deleteComment()">delete</a>
   </div>
+
   <div *ngIf="answer">
     <app-create-comment [parentId]="comment.Id"></app-create-comment>
   </div>
+
   <div *ngIf="edit">
     <app-create-comment [comment]="comment"></app-create-comment>
   </div>
+  
 <br/>
 </div>

@@ -1,5 +1,4 @@
 @import '~bootstrap/dist/css/bootstrap.css';
-/* @import 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'; */
 
 html{
     background-color: #f4f4f4;
@@ -8,9 +7,11 @@ html{
 a.light.light.light{
     color: #e1d7c8;
 }
+
 a:hover.light.light {
     text-decoration: underline;
 }
+
 .form-control {
     border: 0;
     min-height: 35px;
@@ -20,7 +21,8 @@ a:hover.light.light {
     display: block;
     margin: 15px auto;
 }
-.button-submit {
+
+.button-submit.button-submit {
     display: block;
     margin: 15px auto 5px;
     border: 0;
@@ -31,57 +33,59 @@ a:hover.light.light {
     height: 40px;
     width: 250px;
 }
-    .button-submit:hover {
-        display: block;
-        margin: 15px auto 5px;
-        border: 0;
-        background-color: #4f4a47;
-        color: #fdfdfd;
-        font-size: 20px;
-        font-weight: 700;
-        height: 40px;
-        width: 250px;
-    }
-    .container-column{
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: left;
-    }
-    .container{
-        padding: 10px;
-        display: flex;
-        flex-direction: row;
-        justify-content: left;
-    }
-    li, ul {
-        list-style-type: none;
-    }
-    a, a:not([href]):not([tabindex]){
-        margin: 10px;
-        text-decoration: none;
-        color: #4f4a47;
-        font-weight: 700;
-        cursor: pointer;
-    }
-    a:hover,a:not([href]):not([tabindex]):hover {
-        color: #e1d7c8;
-    }
-    .badge {
-        display: inline-block;
-        min-width: 10px;
-        padding: 3px 7px;
-        font-size: 12px;
-        font-weight: bold;
-        line-height: 1;
-        color: #ffffff;
-        text-align: center;
-        white-space: nowrap;
-        vertical-align: baseline;
-        background-color: #4f4a47;
-        border-radius: 10px;
-    }
 
+.button-submit:hover {
+    background-color: #4f4a47;
+}
+
+.container-column{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+
+.container{
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+
+li, ul {
+    list-style-type: none;
+}
+
+a, a:not([href]):not([tabindex]){
+    margin: 10px;
+    text-decoration: none;
+    color: #4f4a47;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+a:hover,a:not([href]):not([tabindex]):hover {
+    color: #e1d7c8;
+}
+
+.badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #4f4a47;
+    border-radius: 10px;
+}
+
+.pagination {
+    margin: 0 auto;
+}
+
+input.ng-touched.ng-valid {border:solid green 2px;}
 input.ng-touched.ng-invalid {border:solid red 2px;}
-textarea.ng-touched.ng-invalid {border:solid red 2px;}
-/* textarea.ng-touched.ng-valid {border:solid green 2px;} */

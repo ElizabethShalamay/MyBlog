@@ -4,9 +4,8 @@ import { Observable } from 'rxjs';
 import { Router } from "@angular/router";
 import { News } from "../../models/news";
 import { AccountService } from "../account/account.service";
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { catchError, map, tap } from "rxjs/operators";
-import { CommentsService } from '../comments/comments.service';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { tap } from "rxjs/operators";
 import { PaginationInfo } from "../../models/pagination-data";
 
 @Injectable({
@@ -23,8 +22,8 @@ export class PostsService {
     private accService: AccountService,
     private httpClient: HttpClient) { }
 
-  getPost(id: number): Observable<Post> {
-    const url = `${this.baseUrl}/${id}`;
+  getPost(id: number, url: string = ""): Observable<Post> {
+    url = url == "" ? `${this.baseUrl}/${id}` : `${url}/${id}`;
     return this.httpClient.get<Post>(url, { headers: this.accService.getAuthHeaders() });
   }
 
@@ -64,10 +63,12 @@ export class PostsService {
         })
       );
   }
+
   updatePost(post: Post): Observable<any> {
     let url = `${this.baseUrl}/${post.Id}`;
     return this.httpClient.put(url, post, { headers: this.accService.getAuthHeaders() });
   }
+
   removePost(post: Post): Observable<Post> {
     return this.httpClient.delete<Post>
       (`${this.baseUrl}/${post.Id}`, { headers: this.accService.getAuthHeaders() })
@@ -75,6 +76,6 @@ export class PostsService {
         tap(() => {
           this.router.navigate(['/posts']);
         })
-      );;
+      );
   }
 }

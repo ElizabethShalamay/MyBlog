@@ -1,5 +1,6 @@
 <div class="container">
   <div class="container-column" *ngIf="posts">
+
     <li *ngFor="let post of posts">
       <div class="post">
         <div class="info heading">
@@ -13,15 +14,16 @@
           <div class="container">
             <span>Tags: </span>
             <li *ngFor="let tag of post.Tags">
-              <a (click)="search(tag)">{{tag}}</a>
+              <a class="badge light" (click)="search(tag)">{{tag}}</a>
             </li>
             <a class="open-post" routerLink="/posts/{{post.Id}}">
-              <span class="badge">Open post >></span>
+              <span>Open post >></span>
             </a>
           </div>
         </div>
       </div>
     </li>
+
     <div class="container">
       <ul class="pagination">
         <li>
@@ -37,4 +39,5 @@
   <div>
     <app-news></app-news>
   </div>
+  
 </div>

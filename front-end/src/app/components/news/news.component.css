@@ -6,12 +6,14 @@
 .preview p {
     margin: 0;
 }
+
 .open-post {
     display: block;
     text-align: right;
     text-decoration: none;
     font-size: 14px;
 }
+
 .badge {
     display: inline-block;
     min-width: 10px;
@@ -27,6 +29,7 @@
     background-color: #4f4a47;
     border-radius: 10px;
 }
+
 .heading {
     padding: 5px 10px;
     background-color: #f6ece1;
@@ -41,21 +44,23 @@
 .user-name {
     float: left;
 }
+
 a{
     margin: 10px;
     text-decoration: none;
     color: #4f4a47;
     font-weight: 700;
 }
+
 a:hover {
     color: #e1d7c8;
 }
+
 .open-post > a > span{
     text-align: left;
 }
 
 .news.news {
-    /* float: right; */
     border-left: 6px solid #e1d7c8;
     box-shadow: 0 2px 6px 0;
     height: 400px;
@@ -64,8 +69,8 @@ a:hover {
     margin-bottom: 30px;
     color: #4f4a47;
 }
+
 .tags {
-    /* float: right; */
     border-left: 6px solid #e1d7c8;
     box-shadow: 0 2px 6px 0;
     height: 200px;
@@ -74,6 +79,7 @@ a:hover {
     margin-bottom: 30px;
     color: #4f4a47;
 }
+
 .button-pagination{
     display: block;
     margin: 0px auto 5px;

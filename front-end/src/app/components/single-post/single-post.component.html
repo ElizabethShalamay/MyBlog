@@ -1,49 +1,54 @@
 <div class="container">
 
-<div class="main-post container-column">
-  <div class="heading">
-    <p>{{post.Title}}      
-    </p>
-    
-    <p class="date">
-      <span style="font-weight:500">{{post.AuthorName}} 
-      {{post.PostedAt | date: 'dd/MM/yyyy hh:mm'}}</span>
-      <br/>
-      <a *ngIf="isOwn" routerLink="/creator/{{post.Id}}">Edit</a>
-      <a *ngIf="isOwn" (click)="deletePost(post)">Delete</a>
-    </p>
-    
-  </div>
+  <div class="main-post container-column">
+    <div class="heading">
+      <p>{{post.Title}}
+      </p>
 
-  <div class="text">
-    <p [innerHtml]="post.Text"></p>
-  </div>
-  <div class="container">
-      Tags: <li *ngFor="let tag of post.Tags">
+      <p class="date">
+        <span style="font-weight:500">{{post.AuthorName}} {{post.PostedAt | date: 'dd/MM/yyyy hh:mm'}}</span>
+        <br/>
+        <a *ngIf="isOwn" routerLink="/creator/{{post.Id}}">Edit</a>
+        <a *ngIf="isOwn" (click)="deletePost(post)">Delete</a>
+      </p>
+
+    </div>
+
+    <div class="text">
+      <p [innerHtml]="post.Text"></p>
+    </div>
+    <div class="container">
+      Tags:
+      <li *ngFor="let tag of post.Tags">
         <a (click)="search(tag)">{{tag}}</a>
       </li>
     </div>
-    
-  <hr /> 
-  <h3>Comments</h3>
-  <app-comments></app-comments>
-  <div class="container">
+
+    <hr />
+
+    <h3>Comments</h3>
+    <app-comments></app-comments>
+
+    <div class="container">
       <ul class="pagination">
         <li>
-          <button class="button-submit" type="button"  (click)="goPrev()"> << Previous</button>
+          <button class="button-submit" type="button" (click)="goPrev()">
+            << Previous</button>
         </li>
         <li>
           <button class="button-submit" type="button" (click)="goNext()">Next >> </button>
         </li>
       </ul>
     </div>
-  <div class="comment-creator">
-      <h3>Add comment</h3>
-    <app-create-comment></app-create-comment>
-  </div>
-</div>
 
-<div>
+    <div class="comment-creator">
+      <h3>Add comment</h3>
+      <app-create-comment></app-create-comment>
+    </div>
+
+  </div>
+
+  <div>
     <app-news></app-news>
   </div>
 

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Tag } from '../../models/tag';
 import { AccountService } from '../account/account.service';
 
@@ -10,10 +9,10 @@ import { AccountService } from '../account/account.service';
 })
 export class TagsService {
 
-  constructor(private httpClient:HttpClient,
-  private accService: AccountService) { }
+  constructor(private httpClient: HttpClient,
+    private accService: AccountService) { }
 
   getAll(): Observable<Tag[]> {
-    return this.httpClient.get<Tag[]>('api/tags', {headers:this.accService.getAuthHeaders()});
+    return this.httpClient.get<Tag[]>('api/tags', { headers: this.accService.getAuthHeaders() });
   }
 }

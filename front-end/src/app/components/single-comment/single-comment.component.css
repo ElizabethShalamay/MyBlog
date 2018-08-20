@@ -3,17 +3,17 @@
     margin: 0 30px 0 0;
 }
 
-    .comment-body + a {
-        font-size: 14px;
-        font-weight: 400;
-        color: #726e6b;
-    }
+.comment-body + a {
+    font-size: 14px;
+    font-weight: 400;
+    color: #726e6b;
+}
 
-        .comment-body + a:hover {
-            text-decoration: none;
-            color: #e1d7c8;
-            font-weight: 400;
-        }
+.comment-body + a:hover {        
+    text-decoration: none;
+    color: #e1d7c8;
+    font-weight: 400;
+}
 
 .comment-heading {
     font-size: 14px;

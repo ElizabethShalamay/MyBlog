@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Comment } from "../../models/comment";
 import { CommentsService } from "../../services/comments/comments.service";
 import { Router, ActivatedRoute } from "@angular/router";
+import { AccountService } from '../../services/account/account.service';
 
 @Component({
   selector: 'app-comments',
@@ -15,22 +16,25 @@ export class CommentsComponent implements OnInit {
   page = 1;
 
   constructor(private commentsService: CommentsService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private router: Router,
+    private accService: AccountService) { }
 
-  getComments() { // todo: add pagination
-    if(!this.comments.length)
-      {
-        const id = +this.route.snapshot.paramMap.get('id');
-        this.commentsService.getComments(id, this.page).subscribe(
+  getComments() {
+    if (!this.comments.length) {
+      const id = +this.route.snapshot.paramMap.get('id');
+      this.commentsService.getComments(id, this.page).subscribe(
         data => {
           this.comments.push(...data);
           this.page++;
-        }
-      );
+        });
     }
   }
 
   ngOnInit() {
+    if (!this.accService.authentication.isAuth) {
+      this.router.navigate(["/login"]);
+    }
     this.getComments();
   }
 }

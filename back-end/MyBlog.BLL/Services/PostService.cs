@@ -84,7 +84,7 @@ namespace MyBlog.BLL.Services
         /// <returns>Count of comments for specific post</returns>
         public int CountComments(int postId)
         {
-            return Db.CommentManager.Get(c => c.PostId == postId).Count();
+            return Db.CommentManager.Get(c => c.PostId == postId && c.IsApproved).Count();
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace MyBlog.BLL.Services
         /// <returns>List of posts with specific tag</returns>
         IEnumerable<PostDTO> IPostService.GetPostsByTag(string tag)
         {
-            List<Tag> tagPosts = Db.TagManager.Get(t => t.Name == tag).ToList();
+            List<Tag> tagPosts = Db.TagManager.Get(t => t.Name.Equals(tag, StringComparison.OrdinalIgnoreCase)).ToList();
 
             List<Post> posts = tagPosts.SelectMany(item => item.Posts).ToList();
             IEnumerable<PostDTO> postDTOs = Mapper.Map<IEnumerable<PostDTO>>(posts);
@@ -254,7 +254,10 @@ namespace MyBlog.BLL.Services
 
         private bool Contains(Post post, string text)
         {
-            return post.Title.Contains(text) || post.Description.Contains(text) || post.Text.Contains(text);
+            string lower = text.ToLower();
+            return post.Title.ToLower().Contains(lower) 
+                || post.Description.ToLower().Contains(lower) 
+                || post.Text.ToLower().Contains(lower);
         }
 
         //private string FormatText(string postText) // check format in frontend

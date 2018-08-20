@@ -1,4 +1,5 @@
 <form class="form-group form-control">
+
   <input name="loginInput" type="text" class="form-control" placeholder="Login" 
   [(ngModel)]="email" required #loginInput="ngModel"/>
 
@@ -10,7 +11,8 @@
 
   <div class="button-group">
     <button type="button" class="button-submit" 
-    [disabled]="loginInput.invalid || passwordInput.invalid || cofirmInput.invalid" 
+    [disabled]="loginInput.invalid || passwordInput.invalid || confirmInput.invalid" 
     (click)="onRegisterClick()">Register</button>
   </div>
+  
 </form>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RegisterModel } from "../../models/register-model";
 import { AccountService } from "../../services/account/account.service";
+import { Router } from '../../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +14,8 @@ export class RegisterComponent implements OnInit {
   password: string;
   confirmPassword: string;
 
-  constructor(private accService: AccountService) { }
+  constructor(private accService: AccountService,
+    private router: Router) { }
 
   onLoginInput(value: string) {
     this.email = value;
@@ -27,17 +29,20 @@ export class RegisterComponent implements OnInit {
     this.confirmPassword = value;
   }
 
-  onRegisterClick(){
+  onRegisterClick() {
     const registerModel: RegisterModel = {
-      email : this.email,
-      password : this.password,
+      email: this.email,
+      password: this.password,
       confirmPassword: this.confirmPassword
     };
 
-    this.accService.register(registerModel).subscribe();   
+    this.accService.register(registerModel).subscribe();
   }
 
   ngOnInit() {
+    if (sessionStorage.getItem("Authorization")) {
+      this.accService.authentication.isAuth = true;
+      this.router.navigate(["/posts"]);
+    }
   }
-
 }

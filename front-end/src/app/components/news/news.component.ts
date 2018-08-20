@@ -5,6 +5,7 @@ import { PostsService } from "../../services/posts/posts.service";
 import { TagsService } from "../../services/tags/tags.service";
 import { Router } from '../../../../node_modules/@angular/router';
 import { PaginationInfo } from "../../models/pagination-data";
+import { AccountService } from '../../services/account/account.service';
 
 @Component({
   selector: 'app-news',
@@ -20,21 +21,22 @@ export class NewsComponent implements OnInit {
 
   constructor(private postsService: PostsService,
     private tagsService: TagsService,
-    private router: Router) { }
+    private router: Router,
+    private accService: AccountService) { }
 
   getNews() {
     this.news = [];
     this.paginationInfo = new PaginationInfo();
 
     this.postsService.getNews(this.page).subscribe(
-      (data) => {      
+      data => {
         this.news.push(...data.body["posts"]);
         this.paginationInfo = JSON.parse(data.body["pagination_info"]);
       }
     );
   }
 
-  getPostsByUser(userId:string){
+  getPostsByUser(userId: string) {
     this.postsService.getPostsByAuthor(1, userId).subscribe(
       data => {
         this.postsService.posts.push(...data);
@@ -49,6 +51,7 @@ export class NewsComponent implements OnInit {
       this.getNews();
     }
   }
+
   goPrev() {
     if (this.paginationInfo.previousPage) {
       this.page--;
@@ -63,6 +66,7 @@ export class NewsComponent implements OnInit {
       }
     )
   }
+
   onTagClick(tag: string) {
     let tagString = `#${tag}`;
 
@@ -71,7 +75,11 @@ export class NewsComponent implements OnInit {
     );
     this.router.navigate(['search']);
   }
+
   ngOnInit() {
+    if (!this.accService.authentication.isAuth) {
+      this.router.navigate(["/login"]);
+    }
     this.getNews();
     this.getTags();
   }

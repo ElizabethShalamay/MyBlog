@@ -3,9 +3,8 @@ import { Comment } from "../../models/comment";
 import { Observable } from 'rxjs';
 import { Router } from "@angular/router";
 import { AccountService } from "../account/account.service";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, tap } from "rxjs/operators";
-import { News } from '../../models/news';
+import { HttpClient } from '@angular/common/http';
+import { tap } from "rxjs/operators";
 
 
 @Injectable({
@@ -23,6 +22,7 @@ export class CommentsService {
     url == "" ? `${this.baseUrl}?page=${page}` : `${url}?page=${page}`;
     return this.httpClient.get<Comment[]>(url, { headers: this.accService.getAuthHeaders() });
   }
+
   getComments(postId: number, page: number): Observable<Comment[]> {
     const url = `${this.baseUrl}/${postId}?page=${page}`;
     return this.httpClient.get<Comment[]>(url, { headers: this.accService.getAuthHeaders() });
@@ -45,6 +45,7 @@ export class CommentsService {
       Answer: !!parentId,
       Children: []
     };
+
     const url = `${this.baseUrl}/${postId}`;
     return this.httpClient.post<Comment>(url, comment, { headers: this.accService.getAuthHeaders() })
       .pipe(
@@ -54,6 +55,7 @@ export class CommentsService {
         })
       );
   }
+
   updateComment(comment: Comment): Observable<any> {
     let url = `${this.baseUrl}/${comment.Id}`;
     return this.httpClient.put(url, comment, { headers: this.accService.getAuthHeaders() })
@@ -64,6 +66,7 @@ export class CommentsService {
         })
       );
   }
+
   removeComment(comment: Comment): Observable<Comment> {
     return this.httpClient.delete<Comment>
       (`${this.baseUrl}?id=${comment.Id}`, { headers: this.accService.getAuthHeaders() }).pipe(

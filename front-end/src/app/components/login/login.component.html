@@ -1,8 +1,11 @@
 <div id="login-form">
+
   <form class="form-group">
+
     <div name="badRequest">
       <span class="label label-danger">{{badRequest}}</span>
     </div>
+
     <input id="emailLogin" name="loginInput" type="text" 
     class="form-control" placeholder="Login" [(ngModel)]="login" required #loginInput="ngModel"/>
 
@@ -11,8 +14,11 @@
 
     <div class="button-group">
       <button type="button" class="button-submit" (click)="onSignInClick()" 
+
       [disabled]="loginInput.invalid || passwordInput.invalid" >Sign in</button>
+
       <a routerLink="/register">Register</a>
+      
     </div>
   </form>
 </div>

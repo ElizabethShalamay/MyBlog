@@ -5,6 +5,8 @@ import { Post } from "../../models/post";
 import { UsersService } from '../../services/users/users.service';
 import { PostsService } from '../../services/posts/posts.service';
 import { CommentsService } from '../../services/comments/comments.service';
+import { AccountService } from '../../services/account/account.service';
+import { Router } from '../../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -21,10 +23,16 @@ export class AdminComponent implements OnInit {
   postsTab: boolean = false;
   commentsTab: boolean = false;
 
+  user: User;
+  post: Post;
+
+  open: boolean;
+
   constructor(private userService: UsersService,
     private postService: PostsService,
-    private commentService: CommentsService) { }
-
+    private commentService: CommentsService,
+    private accService: AccountService,
+    private router: Router) { }
 
   chooseTab(tab: string) {
     this.usersTab = tab === 'users';
@@ -32,17 +40,35 @@ export class AdminComponent implements OnInit {
     this.commentsTab = tab === 'comments';
   }
 
-
   getUsers(page: number) {
-    this.userService.getUsers(page, 'api/admin/users').subscribe(data => this.users.push(...data));
+    this.userService.getUsers(page, 'api/admin/users')
+      .subscribe(data => this.users.push(...data));
   }
 
   getPosts(page: number) {
-    this.postService.getPosts(page, 'api/admin/posts').subscribe(data => this.posts.push(...data.body));
+    this.postService.getPosts(page, 'api/admin/posts')
+      .subscribe(data => this.posts.push(...data.body));
   }
 
   getComments(page: number) {
-    this.commentService.getAllComments(page, 'api/admin/comments').subscribe(data => this.comments.push(...data));
+    this.commentService.getAllComments(page, 'api/admin/comments')
+      .subscribe(data => this.comments.push(...data));
+  }
+
+  openUser(id: string) {
+    this.user = new User();
+    this.userService.getUser(id, 'api/admin/users').subscribe(user => {
+      this.user = user;
+      this.open = !this.open;
+    });
+  }
+
+  openPost(id: number) {
+    this.post = new Post();
+    this.postService.getPost(id, 'api/admin/posts').subscribe(post => {
+      this.post = post;
+      this.open = !this.open;
+    });
   }
 
   approvePost(id: number) {
@@ -70,8 +96,12 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUsers(1); /// ??????????????????????????
-    this.getPosts(1);
-    this.getComments(1);
+    if (!this.accService.authentication.isAuth) {
+      this.router.navigate(["/login"]);
+    }
+    let page = 1;
+    this.getUsers(page);
+    this.getPosts(page);
+    this.getComments(page);
   }
 }

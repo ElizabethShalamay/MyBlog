@@ -16,13 +16,11 @@ export class HomeComponent implements OnInit {
   constructor(private accService: AccountService,
     private postService: PostsService,
     private router: Router) {
-      accService.getLoggedIn.subscribe(auth => this.setAuth(auth));
+    accService.getLoggedIn.subscribe(auth => this.setAuth(auth));
   }
 
   onSearchClick() {
-    this.postService.search(this.search).subscribe(
-      data => this.postService.posts = data
-    );
+    this.postService.search(this.search).subscribe(data => this.postService.posts = data);
     this.router.navigate['/search'];
   }
 
@@ -35,6 +33,8 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.accService.authentication.isAuth) {
+      this.router.navigate(["/login"]);
+    }
   }
-
 }

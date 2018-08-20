@@ -1,14 +1,20 @@
 <ul class="nav nav-tabs">
-  <li class="nav-link"  data-toggle="tab">
+  <li class="nav-link" data-toggle="tab">
     <a (click)="chooseTab('users')">Users</a>
   </li>
-  <li class="nav-link"  data-toggle="tab">
+  <li class="nav-link" data-toggle="tab">
     <a (click)="chooseTab('posts')">Posts</a>
   </li>
-  <li class="nav-link"  data-toggle="tab">
+  <li class="nav-link" data-toggle="tab">
     <a (click)="chooseTab('comments')">Comments</a>
   </li>
 </ul>
+
+<div *ngIf="" [(ngModel)]="user" class="user-review">
+  <p>Id: {{user.Id}}</p>
+  <p>Name: {{user.UserName}}</p>
+  <p>Email: {{user.Email}}</p>
+</div>
 
 <table *ngIf="usersTab" class="table">
   <thead class="thead-dark">
@@ -21,56 +27,80 @@
   <tbody>
     <tr *ngFor="let user of users">
       <td>{{user.UserName}}</td>
-      <td><a routerLink="">Open</a></td>
-      <td><a (click)="deleteUser(user.Id)">Delete</a></td>
+      <td>
+        <a (click)="openUser(user.Id)">Open</a>
+      </td>
+      <td>
+        <a (click)="deleteUser(user.Id)">Delete</a>
+      </td>
     </tr>
   </tbody>
 </table>
 
-<table *ngIf="postsTab" class="table">
+<div *ngIf="" [(ngModel)]="post" class="post-review">
+  <p>Id: {{post.Id}}</p>
+  <p>Author name: {{post.AuthorName}}</p>
+  <p>Date: {{post.PostedAt | date: 'dd/MM/yyy hh:mm'}}</p>
+  <p>Title: {{post.Title}}</p>
+  <p>Description: {{post.Description}}</p>
+  <p>Text: {{post.Text}}</p>
+</div>
+
+<table *ngIf="" class="table">
   <thead class="thead-dark">
-      <tr>
-          <th scope="col">Title</th>
-          <th scope="col">Author Name</th>
-          <th scope="col">Date</th>    
-          <th scope="col">Approved</th> 
-          <th scope="col"></th>
-          <th scope="col"></th>
-      </tr>
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Author Name</th>
+      <th scope="col">Date</th>
+      <th scope="col">Approved</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
   </thead>
   <tbody>
-          <tr *ngFor="let post of posts">
-              <td>{{post.Title}}</td>
-              <td>{{post.AuthorName}}</td>
-              <td>{{post.PostedAt}}</td>
-              <td>{{post.IsApproved}}</td>
-              <td><a routerLink="">Open</a></td>
-              <td><a (click)="approvePost(post.Id)">Approve</a></td>
-              <td><a (click)="deletePost(post.Id)">Delete</a></td>
-          </tr>
+    <tr *ngFor="let post of posts">
+      <td>{{post.Title}}</td>
+      <td>{{post.AuthorName}}</td>
+      <td>{{post.PostedAt | date: 'dd/MM/yyyy hh:mm'}}</td>
+      <td>{{post.IsApproved}}</td>
+      <td>
+        <a (click)="openPost(post.Id)">Open</a>
+      </td>
+      <td>
+        <a (click)="approvePost(post.Id)">Approve</a>
+      </td>
+      <td>
+        <a (click)="deletePost(post.Id)">Delete</a>
+      </td>
+    </tr>
   </tbody>
 </table>
 
 <table *ngIf="commentsTab" class="table">
   <thead class="thead-dark">
-      <tr>
-          <th scope="col">Author Name</th>
-          <th scope="col">Date</th>
-          <th scope="col">Post</th>
-          <th scope="col">Short description</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-      </tr>
+    <tr>
+      <th scope="col">Author Name</th>
+      <th scope="col">Date</th>
+      <th scope="col">Post</th>
+      <th scope="col">Text</th>
+      <th scope="col">Approved</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
   </thead>
   <tbody>
-          <tr *ngFor="let comment of comments">
-              <td>{{comment.AuthorName}}</td>
-              <td>{{comment.Date}}</td>
-              <td>{{comment.PostId}}</td>
-              <td>{{comment.Text}}</td>
-              <td><a routerLink="">Open</a></td>
-              <td><a (click)="approveComment(comment.Id)">Approve</a></td>
-              <td><a (click)="deleteComment(comment.Id)">Delete</a></td>         
-          </tr>
+    <tr *ngFor="let comment of comments">
+      <td>{{comment.AuthorName}}</td>
+      <td>{{comment.Date | date: 'dd/MM/yyyy hh:mm'}}</td>
+      <td>{{comment.PostId}}</td>
+      <td>{{comment.Text}}</td>
+      <td>{{post.IsApproved}}</td>
+      <td>
+        <a (click)="approveComment(comment.Id)">Approve</a>
+      </td>
+      <td>
+        <a (click)="deleteComment(comment.Id)">Delete</a>
+      </td>
+    </tr>
   </tbody>
 </table>

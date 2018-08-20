@@ -16,13 +16,13 @@ export class LoginComponent implements OnInit {
   tokenParam: TokenParams;
   badRequest: string = "";
 
-
   constructor(private router: Router,
     private accService: AccountService) { }
 
   onLoginInput(value: string) {
     this.login = value;
   }
+
   onPasswordInput(value: string) {
     this.password = value;
   }
@@ -35,30 +35,28 @@ export class LoginComponent implements OnInit {
 
     this.accService.signIn(loginModel)
       .subscribe(data => {
-        if(!this.accService.bagRequest){
-        this.tokenParam = data;
-        localStorage.setItem("Authorization", data.access_token);
+        if (!this.accService.bagRequest) {
+          this.tokenParam = data;
 
-        this.accService.authentication.userName = this.login;
-        this.accService.authentication.isAuth = true;
-
-        this.accService.getLoggedIn.emit(true);
-        if (this.accService.authentication.userName == 'admin') {
-          this.router.navigate(['/admin']);
+          this.accService.getLoggedIn.emit(true);
+          if (this.accService.authentication.userName == 'admin') {
+            this.router.navigate(['/admin']);
+          }
+          else { 
+            this.router.navigate(['/posts']); 
+          }
         }
-        else { this.router.navigate(['/posts']); }
-      }
-
-    }
-      ,
-    error =>{
-      this.badRequest = error.error.error_description;   
-      this.password = "";    
-    }
-  );
+      },
+        error => {
+          this.badRequest = error.error.error_description;
+          this.password = "";
+        }
+      );
   }
 
   ngOnInit() {
+    if (sessionStorage.getItem("Authorization")) {
+      this.router.navigate(["/posts"]);
+    }
   }
-
 }

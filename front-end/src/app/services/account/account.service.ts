@@ -5,7 +5,7 @@ import { LoginModel } from '../../models/login-model';
 import { TokenParams } from '../../models/token-params'
 import { RegisterModel } from '../../models/register-model';
 import { Router } from '@angular/router'
-import { catchError, map, tap } from "rxjs/operators";
+import { tap } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,6 @@ export class AccountService {
 
   @Output() getLoggedIn: EventEmitter<any> = new EventEmitter();
 
-
   private tokenUrl = '/Token';
   bagRequest: boolean;
 
@@ -31,7 +30,15 @@ export class AccountService {
     const url = this.tokenUrl;
     var data = `grant_type=password&username=${loginModel.username}&password=${loginModel.password}`;
     var headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    return this.httpClient.post<TokenParams>(url, data, { headers: headers });
+    return this.httpClient.post<TokenParams>(url, data, { headers: headers })
+      .pipe(
+        tap(data => {
+          sessionStorage.setItem("Authorization", data.access_token);
+
+          this.authentication.userName = loginModel.username;
+          this.authentication.isAuth = true;
+        })
+      );
   }
 
   register(registerModel: RegisterModel): Observable<RegisterModel> {
@@ -40,7 +47,7 @@ export class AccountService {
   }
 
   logOut() {
-    localStorage.removeItem("Authorization");
+    sessionStorage.removeItem("Authorization");
     this.authentication.isAuth = false;
     this.getLoggedIn.emit(false);
     this.authentication.userName = "";
@@ -48,7 +55,7 @@ export class AccountService {
   }
 
   getAuthHeaders(): HttpHeaders {
-    var authData = localStorage.getItem("Authorization");
+    var authData = sessionStorage.getItem("Authorization");
     if (authData) {
       var headers = new HttpHeaders();
       headers = headers.append('Authorization', `Bearer ${authData}`);

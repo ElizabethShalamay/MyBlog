@@ -3,8 +3,6 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { AccountService } from "../../services/account/account.service";
 import { Post } from "../../models/post";
 import { PostsService } from '../../services/posts/posts.service';
-import { CommentsService } from '../../services/comments/comments.service';
-
 
 @Component({
   selector: 'app-single-post',
@@ -25,28 +23,27 @@ export class SinglePostComponent implements OnInit {
 
   getPost(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.postsService.getPost(id)
-      .subscribe(
-        post => {
-          this.post = post;
-          this.postId = post.Id;
-          this.isOwn = this.accService.authentication.userName == this.post.AuthorName;
-        });
+    this.postsService.getPost(id).subscribe(
+      post => {
+        this.post = post;
+        this.postId = post.Id;
+        this.isOwn = this.accService.authentication.userName == this.post.AuthorName;
+      });
   }
 
   deletePost(): void {
-    this.postsService.removePost(this.post)
-      .subscribe();
+    this.postsService.removePost(this.post).subscribe();
   }
 
   search(search: string) {
-    this.postsService.search(`#${search}`).subscribe(data =>
-      this.postsService.posts.push(...data)
-    );
+    this.postsService.search(`#${search}`).subscribe(data => this.postsService.posts.push(...data));
     this.router.navigate(['search']);
   }
 
   ngOnInit() {
+    if (!this.accService.authentication.isAuth) {
+      this.router.navigate(["/login"]);
+    }
     this.getPost();
   }
 }

@@ -3,23 +3,8 @@
     flex-direction: column;
     background-color:  #f4f4f4;
 }
+
 textarea{
     resize: none;
     width: 75%;
 }
-
-/* .creator{
-    
-}
-.heading{
-    
-}
-.description{
-    
-}
-.text{
-    
-}
-.tags{
-    
-} */

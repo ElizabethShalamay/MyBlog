@@ -14,12 +14,13 @@ export class UsersService {
   constructor(private httpClient: HttpClient,
     private accService: AccountService) { }
 
-  getUsers(page:number, url:string = ""): Observable<User[]> {
-    url = url == "" ? `${this.baseUrl}?page=${page}`: `${url}?page=${page}`;
+  getUsers(page: number, url: string = ""): Observable<User[]> {
+    url = url == "" ? `${this.baseUrl}?page=${page}` : `${url}?page=${page}`;
     return this.httpClient.get<User[]>(url, { headers: this.accService.getAuthHeaders() });
   }
-  getUser(id: string): Observable<User> {
-    let url = `${this.baseUrl}/${id}`;
+
+  getUser(id: string, url: string = ""): Observable<User> {
+    url = url == "" ? `${this.baseUrl}/${id}` : `${url}/${id}`;
     return this.httpClient.get<User>(url, { headers: this.accService.getAuthHeaders() });
   }
 
