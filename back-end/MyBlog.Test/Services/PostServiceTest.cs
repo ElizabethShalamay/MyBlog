@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyBlog.BLL.DTO;
+using MyBlog.BLL;
 using MyBlog.BLL.Interfaces;
 using MyBlog.BLL.Services;
 using MyBlog.Test.Context;
@@ -12,6 +13,10 @@ namespace MyBlog.Test.Services
     [TestClass]
     public class PostServiceTest
     {
+        const int POST_PAGE_SIZE = 2;
+        const int NEWS_PAGE_SIZE = 4;
+        const int ADMIN_PAGE_SIZE = 15;
+
         IPostService service;
         UnitOfWork unitOfWork;
 
@@ -56,6 +61,10 @@ namespace MyBlog.Test.Services
         [TestMethod]
         public void GetPosts_GetFirstPageOfApprovedPosts_Return2Posts()
         {
+            // Arrange
+            service.PageInfo.PageSize = POST_PAGE_SIZE;
+            service.PageInfo.PageNumber = 1;
+
             // Act
             IEnumerable<PostDTO> result = service.GetPosts(1, true);
 
@@ -79,6 +88,10 @@ namespace MyBlog.Test.Services
         [TestMethod]
         public void GetPosts_GetFirstPageOfPostsByUser2_Return2Posts()
         {
+            // Arrange
+            service.PageInfo.PageSize = POST_PAGE_SIZE;
+            service.PageInfo.PageNumber = 1;
+
             // Act
             IEnumerable<PostDTO> result = service.GetPosts("user2", 1);
 
@@ -91,6 +104,10 @@ namespace MyBlog.Test.Services
         [TestMethod]
         public void GetPosts_GetFirstPageOfPostsByUser3_ReturnNoPosts()
         {
+            // Arrange
+            service.PageInfo.PageSize = POST_PAGE_SIZE;
+            service.PageInfo.PageNumber = 1;
+
             // Act
             IEnumerable<PostDTO> result = service.GetPosts("user3", 1);
 
@@ -380,6 +397,10 @@ namespace MyBlog.Test.Services
         [TestMethod]
         public void GetPaginationData_GetPaginationDataForFirstPage_ReturnJSONString()
         {
+            // Arrange
+            service.PageInfo.PageSize = POST_PAGE_SIZE;
+            service.PageInfo.PageNumber = 1;
+
             // Act
             string paginationData = service.GetPaginationData(1);
 

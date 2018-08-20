@@ -14,6 +14,8 @@ namespace MyBlog.BLL.Infrastructure
         public override void Load()
         {
             Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument(connectionString);
+            Bind<IIdentityManager>().To<UnitOfWork>().WithConstructorArgument(connectionString);
+
         }
     }
 }

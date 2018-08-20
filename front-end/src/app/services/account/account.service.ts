@@ -1,10 +1,11 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, EMPTY, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoginModel } from '../../models/login-model';
 import { TokenParams } from '../../models/token-params'
 import { RegisterModel } from '../../models/register-model';
 import { Router } from '@angular/router'
+import { catchError, map, tap } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class AccountService {
 
 
   private tokenUrl = '/Token';
+  bagRequest: boolean;
 
   constructor(private httpClient: HttpClient,
     private router: Router) { }

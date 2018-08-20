@@ -25,10 +25,10 @@ export class PostsComponent implements OnInit {
 
   getPosts() {
     this.posts = [];
+    this.paginationInfo = new PaginationInfo();
     this.postsService.getPosts(this.page).subscribe(
       (data) => {
-        this.posts.push(...data.body["posts"]);
-        
+        this.posts.push(...data.body["posts"]);       
         this.paginationInfo = JSON.parse(data.body["pagination_info"]);
       }
     );
@@ -56,7 +56,7 @@ export class PostsComponent implements OnInit {
   getPostsByAuthor(authorId: string) {
     this.postsService.getPostsByAuthor(this.page, authorId).subscribe(
       data => {
-        this.posts.push(...data.posts);
+        this.posts.push(...data);
         
         this.page++;
       }

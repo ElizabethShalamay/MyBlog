@@ -1,5 +1,3 @@
-<a routerLink="/creator">
-  + Add new post</a>
 <div class="container">
   <div class="container-column" *ngIf="posts">
     <li *ngFor="let post of posts">
@@ -13,6 +11,7 @@
         <div class="post-text">
           <p [innerHtml]="post.Description"></p>
           <div class="container">
+            <span>Tags: </span>
             <li *ngFor="let tag of post.Tags">
               <a (click)="search(tag)">{{tag}}</a>
             </li>
@@ -26,17 +25,16 @@
     <div class="container">
       <ul class="pagination">
         <li>
-          <button class="button-submit" type="button"  [disabled]="paginationInfo.previousPage" (click)="goPrev()"> << Previous</button>
+          <button class="button-submit" type="button"  (click)="goPrev()"> << Previous</button>
         </li>
         <li>
-          <button class="button-submit" type="button" [disabled]="paginationInfo.nextPage" (click)="goNext()">Next >> </button>
+          <button class="button-submit" type="button" (click)="goNext()">Next >> </button>
         </li>
       </ul>
     </div>
   </div>
 
-
-  <div class="news">
+  <div>
     <app-news></app-news>
   </div>
 </div>

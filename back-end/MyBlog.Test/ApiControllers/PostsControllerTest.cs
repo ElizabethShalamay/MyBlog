@@ -13,6 +13,7 @@ using System.Linq;
 using AutoMapper;
 using MyBlog.BLL.DTO;
 using Newtonsoft.Json;
+using MyBlog.BLL;
 
 namespace MyBlog.Test.ApiControllers
 {
@@ -37,7 +38,8 @@ namespace MyBlog.Test.ApiControllers
             // Arrange
             postServiceMock.Setup(service => service.GetPosts("user2", 1))
                 .Returns(Mapper.Map<IEnumerable<PostDTO>>(unitOfWork.PostManager.Get(p => p.Author.UserName == "user2")));
-            postServiceMock.Setup(service => service.GetPaginationData(1)).Returns("Pagination data");
+            postServiceMock.Setup(service => service.GetPaginationData(1,"")).Returns("Pagination data");
+            postServiceMock.Setup(service => service.PageInfo).Returns(new PageInfo());
             var controller = new PostsController(postServiceMock.Object);
 
             // Act
@@ -54,7 +56,8 @@ namespace MyBlog.Test.ApiControllers
             // Arrange
             postServiceMock.Setup(service => service.GetPosts("user2", 1))
                 .Returns(Mapper.Map<IEnumerable<PostDTO>>(unitOfWork.PostManager.Get(p => p.Author.UserName == "user2")));
-            postServiceMock.Setup(service => service.GetPaginationData(1)).Returns("Pagination data");
+            postServiceMock.Setup(service => service.GetPaginationData(1, "")).Returns("Pagination data");
+            postServiceMock.Setup(service => service.PageInfo).Returns(new PageInfo());
             var controller = new PostsController(postServiceMock.Object);
 
             // Act

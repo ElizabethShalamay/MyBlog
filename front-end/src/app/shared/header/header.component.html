@@ -1,23 +1,24 @@
 <!-- Show this for logged out users -->
 <div *ngIf="!isAuthenticated">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+    <nav class="navbar navbar-expand-lg justify-content-between">
         <div>
-            <a class="navbar-brand" routerLink="/posts">MyBlog</a>
+            <a class="navbar-brand light" routerLink="/posts">MyBlog</a>
         </div>
     </nav>
 </div>
 
 <!-- Show this for logged in users -->
 <div *ngIf="isAuthenticated">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+    <nav class="navbar navbar-expand-lg justify-content-between">
         <div>
-            <a class="navbar-brand" routerLink="/posts">MyBlog</a>
+            <a class="navbar-brand light" routerLink="/posts">MyBlog</a>
+            <a *ngIf="accService.authentication.userName !== 'admin'" class="navbar-brand light" routerLink="/creator">Add post</a>
         </div>
-        <div class="navbar-brand">
+        <div class="navbar-brand light">
             <div class="form-inline">
-                <input class="form-control mr-sm-3" name="search" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="search" #searchText="ngModel" required>
+                <input class="form-control form-control-sm mr-sm-3" name="search" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="search" #searchText="ngModel" required>
                 <button class="btn my-2 my-sm-0" (click)="onSearchClick()" [disabled]="searchText.invalid">Search</button>
-                <a class="navbar-brand" (click)="onLogOffClick()">Log off</a>
+                <a class="navbar-brand light" (click)="onLogOffClick()">Log off</a>
             </div>
         </div>
     </nav>

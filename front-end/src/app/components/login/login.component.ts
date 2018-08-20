@@ -14,7 +14,8 @@ export class LoginComponent implements OnInit {
   login: string;
   password: string;
   tokenParam: TokenParams;
-S
+  badRequest: string = "";
+
 
   constructor(private router: Router,
     private accService: AccountService) { }
@@ -34,6 +35,7 @@ S
 
     this.accService.signIn(loginModel)
       .subscribe(data => {
+        if(!this.accService.bagRequest){
         this.tokenParam = data;
         localStorage.setItem("Authorization", data.access_token);
 
@@ -45,7 +47,15 @@ S
           this.router.navigate(['/admin']);
         }
         else { this.router.navigate(['/posts']); }
-      });
+      }
+
+    }
+      ,
+    error =>{
+      this.badRequest = error.error.error_description;   
+      this.password = "";    
+    }
+  );
   }
 
   ngOnInit() {

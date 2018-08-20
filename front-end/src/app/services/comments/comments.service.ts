@@ -19,8 +19,8 @@ export class CommentsService {
     private accService: AccountService,
     private httpClient: HttpClient) { }
 
-  getAllComments(page: number, url:string = ""): Observable<Comment[]> {
-    url == "" ? `${this.baseUrl}?page=${page}`: `${url}?page=${page}`;
+  getAllComments(page: number, url: string = ""): Observable<Comment[]> {
+    url == "" ? `${this.baseUrl}?page=${page}` : `${url}?page=${page}`;
     return this.httpClient.get<Comment[]>(url, { headers: this.accService.getAuthHeaders() });
   }
   getComments(postId: number, page: number): Observable<Comment[]> {
@@ -49,7 +49,8 @@ export class CommentsService {
     return this.httpClient.post<Comment>(url, comment, { headers: this.accService.getAuthHeaders() })
       .pipe(
         tap(() => {
-          window.location.reload(true);
+          if (this.accService.authentication.userName != "admin")
+            this.router.navigate([`posts/${postId}`]);
         })
       );
   }
@@ -58,7 +59,8 @@ export class CommentsService {
     return this.httpClient.put(url, comment, { headers: this.accService.getAuthHeaders() })
       .pipe(
         tap(() => {
-          window.location.reload(true);
+          if (this.accService.authentication.userName != "admin")
+            this.router.navigate([`posts/${comment.PostId}`]);
         })
       );
   }
@@ -66,7 +68,8 @@ export class CommentsService {
     return this.httpClient.delete<Comment>
       (`${this.baseUrl}?id=${comment.Id}`, { headers: this.accService.getAuthHeaders() }).pipe(
         tap(() => {
-          window.location.reload(true);
+          if (this.accService.authentication.userName != "admin")
+            this.router.navigate([`posts/${comment.PostId}`]);
         })
       );
   }

@@ -17,7 +17,7 @@ ul, li{
     padding: 10px;
     display: flex;
     flex-direction: row;
-    justify-content: left;
+    justify-content: center;
 }
 .container-column{
     padding: 10px;
@@ -66,14 +66,4 @@ ul, li{
     vertical-align: bottom;
     text-decoration: none;
     font-size: 14px;
-}
-
-.news.news {
-    float: right;
-    border-left: 6px solid #e1d7c8;
-    box-shadow: 0 2px 6px 0;
-    height: 830px;
-    width: 390px;
-    margin-left: 30px;
-    color: #4f4a47;
 }

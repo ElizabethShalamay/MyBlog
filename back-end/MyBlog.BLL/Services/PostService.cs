@@ -17,13 +17,17 @@ namespace MyBlog.BLL.Services
     /// </summary>
     public class PostService : IPostService
     {
+        const int POST_PAGE_SIZE = 2;
+        const int NEWS_PAGE_SIZE = 4;
+        const int ADMIN_PAGE_SIZE = 15;
+
         IUnitOfWork Db { get; set; }
         public PageInfo PageInfo { get; set; }
 
         public PostService(IUnitOfWork unitOfWork)
         {
             Db = unitOfWork;
-            PageInfo = new PageInfo { PageNumber = 1, PageSize = 3, TotalItems = Db.PostManager.Get().Count() };
+            PageInfo = new PageInfo();
         }
 
         /// <summary>
@@ -144,7 +148,7 @@ namespace MyBlog.BLL.Services
         /// <returns>List of posts created by specific user</returns>
         IEnumerable<PostDTO> IPostService.GetPostsByAuthor(string id)
         {
-            IEnumerable<Post> posts = Db.PostManager.Get(p => p.UserId.Equals(id));
+            IEnumerable<Post> posts = Db.PostManager.Get(p => p.UserId.Equals(id)).ToList();
             return Mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(posts);
         }
 
@@ -165,8 +169,8 @@ namespace MyBlog.BLL.Services
             post.PostedAt = DateTime.Now;
             // post.Text = FormatText(post.Text); // TODO: Add formating on front-end
 
-            List<Tag> tagList = new List<Tag>();//.SelectMany(item => tags);
-            foreach (string tag in tags) // select many
+            List<Tag> tagList = new List<Tag>();
+            foreach (string tag in tags)
             {
                 tagList.Add(new Tag { Name = tag });
             }
@@ -228,8 +232,14 @@ namespace MyBlog.BLL.Services
         /// </summary>
         /// <param name="page">Page number</param>
         /// <returns>JSON string with pagination info</returns>
-        string IPostService.GetPaginationData(int page)
+        string IPostService.GetPaginationData(int page, string userName)
         {
+            string id = "";
+            if (userName != "")
+                id = (Db as IIdentityManager).AppUserManager.FindByNameAsync(userName).Result.Id;
+
+            PageInfo.TotalItems = PageInfo.PageSize == POST_PAGE_SIZE ? Db.PostManager.Get(p => p.UserId == id).Count() :
+                Db.PostManager.Get().Count();
             var paginationMetadata = new
             {
                 totalCount = PageInfo.TotalItems,

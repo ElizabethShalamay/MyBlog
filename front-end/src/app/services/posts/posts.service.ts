@@ -33,14 +33,14 @@ export class PostsService {
     return this.httpClient.get<Post[]>(url, { headers: this.accService.getAuthHeaders(), observe: 'response' });
   }
 
-  getNews(): Observable<News[]> {
-    const url = `${this.baseUrl}/news`;
-    return this.httpClient.get<News[]>(url, { headers: this.accService.getAuthHeaders() });
+  getNews(page: number): Observable<HttpResponse<News[]>> {
+    const url = `${this.baseUrl}/news?page=${page}`;
+    return this.httpClient.get<News[]>(url, { headers: this.accService.getAuthHeaders(), observe: 'response' });
   }
 
-  getPostsByAuthor(page: number, authorId: string): Observable<any> {
-    const url = `${this.baseUrl}?page=${page}&authorId=${authorId}`;
-    return this.httpClient.get<any>(url, { headers: this.accService.getAuthHeaders() });
+  getPostsByAuthor(page: number, authorId: string): Observable<Post[]> {
+    const url = `${this.searchUrl}/user?page=${page}&authorId=${authorId}`;
+    return this.httpClient.get<Post[]>(url, { headers: this.accService.getAuthHeaders() });
   }
 
   search(text: string): Observable<Post[]> {
@@ -70,6 +70,11 @@ export class PostsService {
   }
   removePost(post: Post): Observable<Post> {
     return this.httpClient.delete<Post>
-      (`${this.baseUrl}/${post.Id}`, { headers: this.accService.getAuthHeaders() });
+      (`${this.baseUrl}/${post.Id}`, { headers: this.accService.getAuthHeaders() })
+      .pipe(
+        tap(() => {
+          this.router.navigate(['/posts']);
+        })
+      );;
   }
 }

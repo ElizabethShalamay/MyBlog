@@ -10,6 +10,8 @@ namespace MyBlog.WEB.Controllers
     [RoutePrefix("api/admin")]
     public class AdminController : ApiController
     {
+        const int ADMIN_PAGE_SIZE = 15;
+
         IPostService postService;
         ICommentService commentService;
         IUserService userService;
@@ -39,6 +41,9 @@ namespace MyBlog.WEB.Controllers
         [Route("posts")]
         public IHttpActionResult GetPosts([FromUri] int page = 1)
         {
+            postService.PageInfo.PageNumber = page;
+            postService.PageInfo.PageSize = ADMIN_PAGE_SIZE;
+
             var posts = postService.GetPosts(page, false);
             return Ok(Mapper.Map<IEnumerable<PostViewModel>>(posts));
         }

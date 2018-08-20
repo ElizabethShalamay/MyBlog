@@ -1,16 +1,26 @@
+@import '~bootstrap/dist/css/bootstrap.css';
+
+a, a:not([href]):not([tabindex]){
+    margin: 0px 10px 10px 0px;
+    text-decoration: none;
+    color: #4f4a47;
+    font-weight: 700;
+    cursor: pointer;
+}
+a:hover,a:not([href]):not([tabindex]):hover {
+    color: #e1d7c8;
+}
 .main-post {
     float: left;
     border-left: 6px solid #e1d7c8;
     box-shadow: 0 2px 6px 0;
-    /*height: 400px;*/
     width: 750px;
-    /*padding: 10px;*/
     margin-bottom: 30px;
 }
 
-    .main-post hr {
-        width: 600px;
-    }
+.main-post hr {
+    width: 600px;
+}
 
 .heading {
     display: flex;

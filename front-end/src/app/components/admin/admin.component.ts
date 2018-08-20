@@ -53,6 +53,7 @@ export class AdminComponent implements OnInit {
 
   deletePost(id: number) {
     let post = this.posts.find(p => p.Id == id);
+    this.posts = this.posts.filter(p => p !== post);
     this.postService.removePost(post).subscribe();
   }
 
@@ -64,6 +65,7 @@ export class AdminComponent implements OnInit {
 
   deleteComment(id: number) {
     let comment = this.comments.find(c => c.Id == id);
+    this.comments = this.comments.filter(c => c !== comment);
     this.commentService.removeComment(comment).subscribe();
   }
 

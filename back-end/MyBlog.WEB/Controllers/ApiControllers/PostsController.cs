@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MyBlog.BLL;
 using MyBlog.BLL.DTO;
 using MyBlog.BLL.Interfaces;
 using MyBlog.WEB.Models;
@@ -11,6 +12,9 @@ namespace MyBlog.WEB.Controllers
     [Authorize]
     public class PostsController : ApiController
     {
+        const int POST_PAGE_SIZE = 2;
+        const int NEWS_PAGE_SIZE = 4;
+
         IPostService postService;
 
         public PostsController(IPostService postService)
@@ -21,14 +25,28 @@ namespace MyBlog.WEB.Controllers
         [Route("api/posts")]
         public IHttpActionResult GetPosts([FromUri] int page = 1)
         {
-            IEnumerable<PostDTO> postsDTO = postService.GetPosts(User.Identity.Name, page);
-            IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostDTO>, IEnumerable<PostViewModel>>(postsDTO);
+            postService.PageInfo.PageNumber = page;
+            postService.PageInfo.PageSize = POST_PAGE_SIZE;
 
-            string pagination_info = postService.GetPaginationData(page);
+            IEnumerable<PostDTO> postsDTO = postService.GetPosts(User.Identity.Name, page);
+            IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostDTO>, IEnumerable<PostViewModel>>(postsDTO);            
+
+            string pagination_info = postService.GetPaginationData(page, User.Identity.Name);
 
             return Ok(new { posts = posts, pagination_info = pagination_info });
         }
 
+        [Authorize(Roles = "User")]
+        [Route("api/search/user")]
+        public IHttpActionResult GetPosts([FromUri] string authorId = "", int page = 1)
+        {
+            IEnumerable<PostDTO> postsDTO = postService.GetPostsByAuthor(authorId);
+            IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostDTO>, IEnumerable<PostViewModel>>(postsDTO);
+
+            return Ok(posts);
+        }
+
+        [Authorize(Roles = "User")]
         [Route("api/search/tag")]
         public IHttpActionResult GetPostsByTag([FromUri] string tag)
         {
@@ -39,6 +57,7 @@ namespace MyBlog.WEB.Controllers
             return Ok(posts);
         }
 
+        [Authorize(Roles = "User")]
         [Route("api/search/text")]
         public IHttpActionResult GetPostsByText([FromUri] string text)
         {
@@ -58,6 +77,7 @@ namespace MyBlog.WEB.Controllers
             return Ok(post);
         }
 
+        [Authorize(Roles = "User")]
         [Route("api/posts")]
         public IHttpActionResult Post([FromBody] PostViewModel post)
         {
@@ -72,7 +92,6 @@ namespace MyBlog.WEB.Controllers
                 return Ok();
             return BadRequest();
         }
-
 
         [Route("api/posts/{id}")]
         public IHttpActionResult Put(int id, [FromBody] PostViewModel post)
@@ -99,13 +118,19 @@ namespace MyBlog.WEB.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "User")]
         [Route("api/posts/news")]
         public IHttpActionResult GetNews([FromUri] int page = 1)
         {
-            IEnumerable<PostDTO> postsDTO = postService.GetPosts(page, true);
-            IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostViewModel>>(postsDTO);
+            postService.PageInfo.PageNumber = page;
+            postService.PageInfo.PageSize = NEWS_PAGE_SIZE;
 
-            return Ok(posts);
+            IEnumerable<PostDTO> postsDTO = postService.GetPosts(page, true);
+            IEnumerable<PostViewModel> posts = Mapper.Map<IEnumerable<PostViewModel>>(postsDTO);          
+
+            string pagination_info = postService.GetPaginationData(page);
+
+            return Ok(new { posts = posts, pagination_info = pagination_info });
         }
     }
 }

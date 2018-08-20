@@ -34,6 +34,11 @@ export class SinglePostComponent implements OnInit {
         });
   }
 
+  deletePost(): void {
+    this.postsService.removePost(this.post)
+      .subscribe();
+  }
+
   search(search: string) {
     this.postsService.search(`#${search}`).subscribe(data =>
       this.postsService.posts.push(...data)

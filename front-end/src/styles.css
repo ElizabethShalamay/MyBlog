@@ -1,8 +1,15 @@
 @import '~bootstrap/dist/css/bootstrap.css';
+/* @import 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'; */
 
-#login-form {
-    margin-top: 70px;
-    text-align: center;
+html{
+    background-color: #f4f4f4;
+}
+
+a.light.light.light{
+    color: #e1d7c8;
+}
+a:hover.light.light {
+    text-decoration: underline;
 }
 .form-control {
     border: 0;

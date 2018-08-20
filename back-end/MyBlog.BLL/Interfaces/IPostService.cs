@@ -20,6 +20,6 @@ namespace MyBlog.BLL.Interfaces
         bool UpdatePost(PostDTO postDTO);
 
         int CountComments(int postId);
-        string GetPaginationData(int page);
+        string GetPaginationData(int page, string userName = "");
     }
 }

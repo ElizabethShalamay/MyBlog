@@ -4,6 +4,7 @@ import { Tag } from "../../models/tag";
 import { PostsService } from "../../services/posts/posts.service";
 import { TagsService } from "../../services/tags/tags.service";
 import { Router } from '../../../../node_modules/@angular/router';
+import { PaginationInfo } from "../../models/pagination-data";
 
 @Component({
   selector: 'app-news',
@@ -14,15 +15,45 @@ export class NewsComponent implements OnInit {
 
   news: News[] = [];
   tags: Tag[] = [];
+  page = 1;
+  paginationInfo: PaginationInfo = new PaginationInfo();
+
   constructor(private postsService: PostsService,
     private tagsService: TagsService,
     private router: Router) { }
 
   getNews() {
-    this.postsService.getNews().subscribe(
-      news => {
-        this.news.push(...news);
-      });
+    this.news = [];
+    this.paginationInfo = new PaginationInfo();
+
+    this.postsService.getNews(this.page).subscribe(
+      (data) => {      
+        this.news.push(...data.body["posts"]);
+        this.paginationInfo = JSON.parse(data.body["pagination_info"]);
+      }
+    );
+  }
+
+  getPostsByUser(userId:string){
+    this.postsService.getPostsByAuthor(1, userId).subscribe(
+      data => {
+        this.postsService.posts.push(...data);
+        this.router.navigate(["search"]);
+      }
+    )
+  }
+
+  goNext() {
+    if (this.paginationInfo.nextPage) {
+      this.page++;
+      this.getNews();
+    }
+  }
+  goPrev() {
+    if (this.paginationInfo.previousPage) {
+      this.page--;
+      this.getNews();
+    }
   }
 
   getTags() {

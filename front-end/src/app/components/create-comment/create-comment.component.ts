@@ -28,11 +28,13 @@ export class CreateCommentComponent implements OnInit {
     if (this.comment.Id) {
       this.comment.IsApproved = false;
       this.commentsService.updateComment(this.comment).subscribe();
+      
     }
     else {
       const id = +this.route.snapshot.paramMap.get('id');
       this.commentsService.addComment(id, this.text, this.parentId).subscribe();    
     }
+    this.text = "";
   }
 
   ngOnInit() {

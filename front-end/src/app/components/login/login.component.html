@@ -1,6 +1,8 @@
 <div id="login-form">
-  <form class="form-group form-control">
-
+  <form class="form-group">
+    <div name="badRequest">
+      <span class="label label-danger">{{badRequest}}</span>
+    </div>
     <input id="emailLogin" name="loginInput" type="text" 
     class="form-control" placeholder="Login" [(ngModel)]="login" required #loginInput="ngModel"/>
 
