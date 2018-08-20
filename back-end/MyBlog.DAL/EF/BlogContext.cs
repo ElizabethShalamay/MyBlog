@@ -9,14 +9,12 @@ namespace MyBlog.DAL
 
         public BlogContext()
             : base("BlogConnection", throwIfV1Schema: false)
-        {
-        }
+        { }
 
         public static BlogContext Create()
         {
             return new BlogContext();
         }
-
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }

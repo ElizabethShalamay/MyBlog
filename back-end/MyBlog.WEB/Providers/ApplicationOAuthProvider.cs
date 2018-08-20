@@ -42,8 +42,6 @@ namespace MyBlog.WEB.Providers
             AuthenticationProperties properties = CreateProperties(oAuthIdentity.Name);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
-            //context.Request.Context.Authentication.SignIn(cookiesIdentity);
-
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)

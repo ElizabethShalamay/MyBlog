@@ -29,6 +29,7 @@ namespace MyBlog.WEB.Controllers
             var users = userService.GetUsers(page);
             return Ok(Mapper.Map<IEnumerable<UserViewModel>>(users));
         }
+
         [Route("users/{id}")]
         public IHttpActionResult GetUser(string id)
         {
@@ -47,6 +48,7 @@ namespace MyBlog.WEB.Controllers
             var posts = postService.GetPosts(page, false);
             return Ok(Mapper.Map<IEnumerable<PostViewModel>>(posts));
         }
+
         [Route("posts/{id}")]
         public IHttpActionResult GetPost(int id)
         {

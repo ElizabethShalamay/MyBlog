@@ -11,7 +11,7 @@ namespace MyBlog.BLL.Services
         /// <summary>
         /// Define a way for instantiating an application context
         /// </summary>
-        /// <param name="app"></param> // TODO: ???
+        /// <param name="app"></param> 
         public static void ConfigureApplicationDbContext(this IAppBuilder app)
         {
             app.CreatePerOwinContext<BlogContext>(BlogContext.Create);
@@ -20,7 +20,7 @@ namespace MyBlog.BLL.Services
         /// <summary>
         /// Define a way for instantiating an application user manager
         /// </summary>
-        /// <param name="app"></param> // TODO: ???
+        /// <param name="app"></param> 
         public static void ConfigureApplicationUserManager(this IAppBuilder app)
         {
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);

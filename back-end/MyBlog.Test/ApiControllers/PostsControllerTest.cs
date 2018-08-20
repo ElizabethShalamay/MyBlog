@@ -33,7 +33,7 @@ namespace MyBlog.Test.ApiControllers
         }
 
         [TestMethod]
-        public void GetPosts_GetPostsByUser_ReturnPosts() // TODO
+        public void GetPosts_GetPostsByUser_ReturnPosts() 
         {
             // Arrange
             postServiceMock.Setup(service => service.GetPosts("user2", 1))
@@ -46,12 +46,11 @@ namespace MyBlog.Test.ApiControllers
             var result = controller.GetPosts(1);
 
             //Assert
-            //Assert.IsInstanceOfType(result, typeof(OkResult));
             Assert.IsNotNull(result);
         }
 
         [TestMethod]
-        public void GetNews_GetLatestNews_ReturnPosts() // TODO
+        public void GetNews_GetLatestNews_ReturnPosts() 
         {
             // Arrange
             postServiceMock.Setup(service => service.GetPosts("user2", 1))
@@ -64,7 +63,6 @@ namespace MyBlog.Test.ApiControllers
             var result = controller.GetNews(1);
 
             //Assert
-            //Assert.IsInstanceOfType(result, typeof(OkResult));
             Assert.IsNotNull(result);
         }
 

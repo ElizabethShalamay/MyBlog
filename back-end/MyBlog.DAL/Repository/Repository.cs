@@ -37,22 +37,7 @@ namespace MyBlog.DAL.Repository
         {
             table.Add(entity);
             return blog.SaveChanges();
-        }
-
-        //public int Update(T entity, int id)
-        //{
-        //    T entry = Get(id);
-        //    if(entry == null)
-        //    {
-        //        table.Add(entity);
-        //    }
-        //    else
-        //    {
-        //        blog.Entry(entry).CurrentValues.SetValues(entity);
-        //    }
-        //    blog.Entry(entry).State = EntityState.Modified;
-        //    return blog.SaveChanges();
-        //}
+        }       
 
         public int Update(T entity)
         {
@@ -74,7 +59,6 @@ namespace MyBlog.DAL.Repository
             T entity = Get(id);
             table.Remove(entity);
             return blog.SaveChanges();
-
         }
     }
 }

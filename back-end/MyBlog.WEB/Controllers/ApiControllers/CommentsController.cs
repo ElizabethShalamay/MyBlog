@@ -57,8 +57,6 @@ namespace MyBlog.WEB.Controllers
 
             if (success)
                 return Ok();
-
-
             return BadRequest();
         }
 

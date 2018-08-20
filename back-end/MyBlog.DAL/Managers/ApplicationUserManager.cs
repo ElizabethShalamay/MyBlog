@@ -10,8 +10,7 @@ namespace MyBlog.DAL
     {
         public ApplicationUserManager(IUserStore<User> store)
             : base(store)
-        {
-        }
+        { }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
@@ -22,6 +21,7 @@ namespace MyBlog.DAL
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
+
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
@@ -31,11 +31,13 @@ namespace MyBlog.DAL
                 RequireLowercase = false,
                 RequireUppercase = false,
             };
+
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
                 manager.UserTokenProvider = new DataProtectorTokenProvider<User>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
+
             return manager;
         }
     }

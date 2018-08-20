@@ -14,8 +14,7 @@ namespace MyBlog.DAL.Repository
         IRepository<Tag> tagManager;
 
         ApplicationUserManager userManager;
-        RoleManager<Role> roleManager;
-       
+        RoleManager<Role> roleManager;      
 
         public UnitOfWork()
         {

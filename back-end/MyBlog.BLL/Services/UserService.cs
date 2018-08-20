@@ -86,7 +86,7 @@ namespace MyBlog.BLL.Services
         /// <summary>
         /// Create claims for specific user
         /// </summary>
-        /// <param name="context"></param> // TODO: ???
+        /// <param name="context"></param> 
         /// <param name="login">User login</param>
         /// <param name="password">User password</param>
         /// <returns>Claims for user with specified login and password</returns>

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.Identity;
-using MyBlog.DAL.Entities;
+﻿using MyBlog.DAL.Entities;
 using System;
 
 namespace MyBlog.DAL.Interfaces

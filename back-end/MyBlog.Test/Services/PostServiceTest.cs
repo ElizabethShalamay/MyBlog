@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyBlog.BLL.DTO;
-using MyBlog.BLL;
 using MyBlog.BLL.Interfaces;
 using MyBlog.BLL.Services;
 using MyBlog.Test.Context;

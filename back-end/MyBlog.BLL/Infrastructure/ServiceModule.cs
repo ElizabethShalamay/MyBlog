@@ -15,7 +15,6 @@ namespace MyBlog.BLL.Infrastructure
         {
             Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument(connectionString);
             Bind<IIdentityManager>().To<UnitOfWork>().WithConstructorArgument(connectionString);
-
         }
     }
 }

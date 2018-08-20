@@ -59,8 +59,6 @@ namespace MyBlog.WEB.Controllers
             return Ok();
         }
 
-
-
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
         //[Route("ManageInfo")]
         //public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
