@@ -70,7 +70,9 @@ export class PostsComponent implements OnInit {
       this.accService.authentication.isAuth = true;
       this.getPosts();
     }
-
-    this.router.navigate(['/login']);
+    else {
+      this.router.navigate(['/login']);
+    }
+    
   }
 }

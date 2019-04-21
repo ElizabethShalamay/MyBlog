@@ -56,7 +56,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (sessionStorage.getItem("Authorization")) {
-      this.router.navigate(["/posts"]);
+        this.accService.authentication.isAuth = true;
+        this.router.navigate(["/posts"]);
     }
   }
 }
