@@ -1,20 +1,21 @@
-﻿using Ninject.Modules;
-using MyBlog.DAL.Interfaces;
-using MyBlog.DAL.Repository;
+﻿using Autofac;
+using MyBlog.BLL.Services;
+using MyBlog.BLL.Interfaces;
+using Module = Autofac.Module;
+using DAL.Infrastructure;
 
 namespace MyBlog.BLL.Infrastructure
 {
-    public class ServiceModule : NinjectModule
+    public class ServiceModule : Module
     {
-        string connectionString;
-        public ServiceModule(string connectionString)
+        protected override void Load(ContainerBuilder builder)
         {
-            this.connectionString = connectionString;
-        }
-        public override void Load()
-        {
-            Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument(connectionString);
-            Bind<IIdentityManager>().To<UnitOfWork>().WithConstructorArgument(connectionString);
+            builder.RegisterType<CommentService>().As<ICommentService>().InstancePerRequest();
+            builder.RegisterType<PostService>().As<IPostService>().InstancePerRequest();
+            builder.RegisterType<TagService>().As<ITagService>().InstancePerRequest();
+            builder.RegisterType<UserService>().As<IUserService>().InstancePerRequest();
+
+            builder.RegisterModule<DalModule>();
         }
     }
 }

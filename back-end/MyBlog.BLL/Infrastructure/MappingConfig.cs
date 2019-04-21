@@ -11,7 +11,7 @@ namespace MyBlog.BLL.Infrastructure
     /// </summary>
     public class MappingConfig
     {       
-        public static void InitializeMapper(MapperConfigurationExpression config)
+        public static MapperConfigurationExpression InitializeMapper(MapperConfigurationExpression config)
         {
             config.CreateMap<User, UserDTO>();
             config.CreateMap<Post, PostDTO>().ForMember("Tags", t => t.MapFrom(src => src.Tags.Select(str => str.Name)));
@@ -23,7 +23,8 @@ namespace MyBlog.BLL.Infrastructure
             config.CreateMap<CommentDTO, Comment>();
             config.CreateMap<TagDTO, Tag>();
 
-            Mapper.Initialize(config);
+            //Mapper.Initialize(config);
+            return config;
         }
     }
 }
