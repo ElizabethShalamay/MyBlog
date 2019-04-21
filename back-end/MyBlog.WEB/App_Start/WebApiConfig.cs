@@ -1,6 +1,9 @@
 ﻿using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using System.Net.Http.Headers;
+using Autofac;
+using MyBlog.WEB.Infrastructure;
+using Autofac.Integration.WebApi;
 
 namespace MyBlog.WEB
 {
@@ -23,6 +26,28 @@ namespace MyBlog.WEB
             );
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             config.Formatters.Remove(config.Formatters.XmlFormatter);
+            ConfigureDependencies();
+        }
+
+        private static void ConfigureDependencies()
+        {
+            var builder = RegisterDependencies();
+            var container = builder.Build();
+
+            ConfigureWebApi(container);
+        }
+
+        private static ContainerBuilder RegisterDependencies()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterModule<WebModule>();
+            return builder;
+        }
+
+        private static void ConfigureWebApi(ILifetimeScope container)
+        {
+            var webApiResolver = new AutofacWebApiDependencyResolver(container);
+            GlobalConfiguration.Configuration.DependencyResolver = webApiResolver;
         }
     }
 }
